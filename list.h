@@ -20,7 +20,7 @@
 typedef struct list_node {
     struct list_node *prev;
     struct list_node *next;
-} list_node_t, list_t;
+} list_node_t, list_t, queue_node_t, queue_t;
 
 
 #define LIST_INITIAL_VALUE(value)   { &(value), &(value) }
