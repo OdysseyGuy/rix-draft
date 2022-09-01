@@ -34,7 +34,6 @@ SECTIONS {
         *(.data .data.*)
     }
 
-
     /*
      * Init code and data section.
      * This section will be freed once we are done with kernel

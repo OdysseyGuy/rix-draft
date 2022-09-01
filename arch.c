@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 
-extern void mmu_init(void);
+#include <mmu.h>
 
 void arch_init(void) {
     mmu_init();

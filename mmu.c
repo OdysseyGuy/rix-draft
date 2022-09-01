@@ -192,9 +192,9 @@ mmu_status_t
 mmu_get_mapping(
     vaddr_t     vaddr,
     addr_t      pml4,
-    uint64_t    *last_valid_entry,
-    uint64_t    *out_flags,
-    uint32_t    *out_lvl)
+    uint64_t   *last_valid_entry,
+    uint64_t   *out_flags,
+    uint32_t   *out_lvl)
 {
     uint64_t pml4e, pdpe, pde, pte;
     pml4e = get_pml4e_from_pml4t(vaddr, pml4);
@@ -369,13 +369,15 @@ done:
 #endif
 
 /**
- * @brief   Queries the MMU for the physical address mapped to the virtual address. 
+ * @brief
+ * Queries the MMU for the physical address mapped to the virtual
+ * address. 
  */
 mmu_status_t
 mmu_query(
-    _in_ vaddr_t    vaddr,
-    _out_ paddr_t   *paddr,
-    _out_ uint32_t  *flags)
+    _in_  vaddr_t   vaddr,
+    _out_ paddr_t  *paddr,
+    _out_ uint32_t *flags)
 {
     uint64_t cr3, ret_entry, ret_flags;
     uint32_t ret_lvl;

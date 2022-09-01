@@ -42,7 +42,7 @@ ELF_FUNCTION(_start)
     lgdt    pa(_pm_gdtr)
     
     # Setup the segment selectors
-    movl    $DATA_SELECTOR          , %eax
+    movl    $__KERNEL_DS            , %eax
     movl    %eax                    , %ds
     movl    %eax                    , %es
     movl    %eax                    , %fs
@@ -163,7 +163,7 @@ ELF_FUNCTION(_start)
     mov     %eax                    , %cr0
 
     # Jump to 64-bit startup code
-    pushl   $CODE_SELECTOR
+    pushl   $__KERNEL_CS
     pushl   $pa(_start64)
     
     retf

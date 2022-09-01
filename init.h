@@ -6,10 +6,6 @@
 #include <stdint.h>
 #include <compiler.h>
 
-#define _in_
-#define _out_
-
-
 /**
  * @brief
  * Reperesents the different stages of the kernel initialization process.

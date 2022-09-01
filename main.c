@@ -5,6 +5,8 @@
 #include <compiler.h>
 #include <init.h>
 #include <stdio.h>
+#include <x86.h>
+#include <thread.h>
 
 extern void
 arch_init(void);
@@ -20,9 +22,17 @@ void *multiboot_info_ __section(".data");
 
 uint8_t aba[400];
 
+
+void
+uspace_entry(interrupt_frame_t *iframe)
+{
+}
+
 int
 kmain(void)
 {
+    thread_init_early();
+
     init_hooks_init();
 
     kernel_init_upto(INIT_STAGE_VM);

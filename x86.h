@@ -3,43 +3,35 @@
 #ifndef X86_H
 #define X86_H
 
-/*
- * Control Register 0
- */
-#define X86_CR0_WP_BIT          0x00010000  /* Write Protect            */
-#define X86_CR0_PG_BIT          0x80000000  /* Paging enabled           */
+/* Control Register 0 */
+#define X86_CR0_WP_BIT          0x00010000 /* Write Protect */
+#define X86_CR0_PG_BIT          0x80000000 /* Paging enabled */
 
-/*
- * Control Register 4
- */
-#define X86_CR4_PAE_BIT         0x00000020  /* Physical Address Extensions          */
-#define X86_CR4_SMEP_BIT        0x00200000  /* Supervisor Mode Execution Protection */
-#define X86_CR4_SMAP_BIT        0x00400000  /* Supervisor Mode Access Prevention    */
+/* Control Register 4 */
+#define X86_CR4_PAE_BIT         0x00000020 /* Physical Address Extensions */
+#define X86_CR4_SMEP_BIT        0x00200000 /* Supervisor Mode Execution Protection */
+#define X86_CR4_SMAP_BIT        0x00400000 /* Supervisor Mode Access Prevention */
 
-/*
- * Model specific register
- */
-#define X86_IA32_MSR_APIC       0x0000001b  /* Extended Feature Enable Register */
-#define X86_IA32_MSR_EFER       0xc0000080  /* Extended Feature Enable Register */
+/* Model specific register */
+#define X86_IA32_MSR_APIC       0x0000001b /* APIC */
 
-/*
- * EFER MSR
- */
-#define X86_IA32_MSR_EFER_LME   0x00000100  /* Long Mode Enable     */
-#define X86_IA32_MSR_EFER_NXE   0x00001000  /* No-Execute Enable    */
+/* MSR EFER */
+#define X86_IA32_MSR_EFER           0xc0000080
+#define     X86_IA32_MSR_EFER_LME   0x00000100 /* Long Mode Enable */
+#define     X86_IA32_MSR_EFER_NXE   0x00001000 /* No-Execute Enable */
 
 
 #ifndef __ASSEMBLY__
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <compiler.h>
 
 
-#define _in_
-#define _out_
-
-
-/** @brief  x86-64 Interrupt stack frame */
+/**
+ * @brief
+ * x86-64 Interrupt stack frame.
+ */
 typedef struct interrupt_frame {
     uint64_t rdi, rsi, rbp, rbx, rdx, rcx, rax;
     uint64_t r8, r9, r10, r11, r12, r13, r14, r15;
@@ -119,11 +111,11 @@ inp32(_in_ uint16_t port)
 
 static inline void
 cpuid(
-    _in_ uint32_t   leaf,
-    _out_ uint32_t  *eax,
-    _out_ uint32_t  *ebx,
-    _out_ uint32_t  *ecx,
-    _out_ uint32_t  *edx)
+    _in_  uint32_t  leaf,
+    _out_ uint32_t *eax,
+    _out_ uint32_t *ebx,
+    _out_ uint32_t *ecx,
+    _out_ uint32_t *edx)
 {
     asm volatile(
         "cpuid\n"
@@ -134,12 +126,12 @@ cpuid(
 
 static inline void
 cpuid_c(
-    _in_ uint32_t   leaf,
-    _in_ uint32_t   csel,
-    _out_ uint32_t  *eax,
-    _out_ uint32_t  *ebx,
-    _out_ uint32_t  *ecx,
-    _out_ uint32_t  *edx)
+    _in_  uint32_t  leaf,
+    _in_  uint32_t  csel,
+    _out_ uint32_t *eax,
+    _out_ uint32_t *ebx,
+    _out_ uint32_t *ecx,
+    _out_ uint32_t *edx)
 {
     asm volatile(
         "cpuid\n"
@@ -190,11 +182,13 @@ read_msr(_in_ uint32_t msr_id)
 }
 
 static inline void
-write_msr(_in_ uint32_t msr_id, _in_ uint64_t value)
+write_msr(
+    _in_ uint32_t msr_id,
+    _in_ uint64_t value)
 {
     uint32_t lo = (uint32_t)value;
     uint32_t hi = (uint32_t)(value >> 32);
-    
+
     asm volatile ("wrmsr\n" : : "a"(lo), "d"(hi), "c"(msr_id));
 }
 
@@ -255,14 +249,12 @@ static inline x86_flags_t
 save_flags(void)
 {
     x86_flags_t state;
-
     asm volatile(
         "pushf\n"
         "pop %0\n"
         : "=rm" (state)
         :: "memory"
     );
-
     return state;
 }
 
@@ -274,6 +266,50 @@ restore_flags(_in_ x86_flags_t flags)
         "popf\n"
         :: "g" (flags)
         : "memory", "cc"
+    );
+}
+
+static inline uint64_t
+get_fs_offset(uint64_t offset)
+{
+    uint64_t ret;
+    asm volatile(
+        "movq %%fs:%1, %0"
+        : "=r" (ret)
+        : "m" (*(uint64_t *)(offset))
+    );
+    return ret;
+}
+
+static inline uint64_t
+get_gs_offset(uint64_t offset)
+{
+    uint64_t ret;
+    asm volatile(
+        "movq %%gs:%1, %0"
+        : "=r" (ret)
+        : "m" (*(uint64_t *)(offset))
+    );
+    return ret;
+}
+
+static inline void
+set_fs_offset(uint64_t offset, uint64_t val)
+{
+    asm volatile(
+        "movq %0, %%fs:%1"
+        :: "ir" (val), "m" (*(uint64_t *)(offset))
+        : "memory"
+    );
+}
+
+static inline void
+set_gs_offset(uint64_t offset, uint64_t val)
+{
+    asm volatile(
+        "movq %0, %%gs:%1"
+        :: "ir" (val), "m" (*(uint64_t *)(offset))
+        : "memory"
     );
 }
 

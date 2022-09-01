@@ -1,9 +1,5 @@
 #include <asm.h>
 
-# x86 Context Switching
-#
-# cswitch(uint64_t *oldsp, uint64_t *newsp)
-#
 ELF_FUNCTION(cswitch)
     push    %rbp
     movq    %rbp    , %rsp

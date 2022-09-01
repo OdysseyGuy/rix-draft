@@ -3,10 +3,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stddef.h>
-
-
-#define _in_
-#define _out_
+#include <compiler.h>
 
 
 #define min(a, b) (((a) < (b)) ? (a) : (b))

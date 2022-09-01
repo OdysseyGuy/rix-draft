@@ -5,9 +5,8 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include <compiler.h>
 
-#define _in_
-#define _out_
 
 #define container_of(ptr, type, member) \
     ((type *)((addr_t)(ptr) - offsetof(type, member)))
@@ -28,7 +27,14 @@ typedef struct list_node {
 
 #define list_entry(ptr, type, member) container_of(ptr, type, member)
 
-
+/**
+ * @brief
+ * Initializes the list the setting the prev and next pointer
+ * to itself.
+ * 
+ * @param list
+ * List to initialize. 
+ */
 static inline void
 list_init(_in_ list_node_t *list)
 {
@@ -71,7 +77,9 @@ list_is_in_list(_in_ list_node_t *head)
  * Insert a new entry after the specified head.
  */
 static inline void
-list_add(_in_ list_node_t *head, _in_ list_node_t *new_entry)
+list_add(
+    _in_ list_node_t *head,
+    _in_ list_node_t *new_entry)
 {
     new_entry->next = head->next;
     new_entry->prev = head;
@@ -85,7 +93,9 @@ list_add(_in_ list_node_t *head, _in_ list_node_t *new_entry)
  * Insert a new entry before the specified head.
  */
 static inline void
-list_add_tail(_in_ list_node_t *head, _in_ list_node_t *new_entry)
+list_add_tail(
+    _in_ list_node_t *head,
+    _in_ list_node_t *new_entry)
 {
     new_entry->prev = head->prev;
     new_entry->next = head;
@@ -111,6 +121,13 @@ list_replace(
     old_item->next->prev = new_entry;
 }
 
+/**
+ * @brief
+ * Delete the specified entry from a list.
+ * 
+ * @param entry
+ * Entry to delete.
+ */
 static inline void
 list_delete(_in_ list_node_t *entry)
 {
@@ -270,8 +287,8 @@ list_length(_in_ const list_node_t *list)
  */
 static inline void
 list_split_after(
-    _in_ list_node_t    *list,
-    _in_ list_node_t    *pos,
+    _in_  list_node_t   *list,
+    _in_  list_node_t   *pos,
     _out_ list_node_t   *split_to)
 {
     if (pos->next == list) {
@@ -295,5 +312,6 @@ list_splice_after(_in_ list_node_t* splice_from, _in_ list_node_t* pos)
         list_init(splice_from);
     }
 }
+
 
 #endif /* LIST_H */

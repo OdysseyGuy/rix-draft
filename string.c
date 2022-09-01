@@ -4,13 +4,19 @@
 #include <stdint.h>
 
 void *
-memset(void *dest, int c, size_t count) {
+memset(
+    void   *dest,
+    int     c,
+    size_t  count)
+{
     uint8_t *dst = (uint8_t *)dest;
     size_t nabytes = (-(size_t)dest) & (sizeof(size_t) - 1);
     size_t val = c & 0xff;
 
     /* if we have to set both aligned and non aligned bytes */
     if (count > nabytes) {
+        count -= nabytes;
+
         val |= val << 8;
         val |= val << 16;
         val |= val << 32;
@@ -29,8 +35,51 @@ memset(void *dest, int c, size_t count) {
     }
 
     for ( ; count > 0; count-- ) {
-        *dst++ = c;
+        *dst++ = val;
     }
 
     return dest;
+}
+
+void *
+memchr(
+    void const *ptr,
+    int         value,
+    size_t      count)
+{
+    return NULL;
+}
+
+int
+memcmp(
+    void const *a,
+    void const *b,
+    size_t      count)
+{
+    return 0;
+}
+
+void *
+memcpy(
+    void       *dest,
+    void const *src,
+    size_t      count)
+{
+    uint8_t *dst = (uint8_t *)dest;
+    uint8_t *s = (uint8_t *)src;
+
+    for ( ; count > 0; count-- ) {
+        *(dst++) = *(s++);
+    }
+
+    return dest;
+}
+
+void *
+memmove(
+    void       *dest,
+    void const *src,
+    size_t      count)
+{
+    return NULL;
 }

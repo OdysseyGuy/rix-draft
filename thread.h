@@ -1,9 +1,16 @@
+/* SPDX-License-Identifier: MIT */
+
 #ifndef THREAD_H
 #define THREAD_H
 
 #include <stdint.h>
 #include <list.h>
 #include <compiler.h>
+
+typedef struct processor_set processor_set_t;
+
+typedef uint32_t thread_id_t;
+typedef void   (*thread_func_t)(void *arg);
 
 typedef enum thread_state {
     THREAD_STATE_SUSPENDED,
@@ -12,27 +19,32 @@ typedef enum thread_state {
 } thread_state_t;
 
 
-typedef uint32_t thread_id_t;
-typedef void   (*thread_fn_t)(void *arg);
-
-
 typedef struct thread {
-    thread_id_t     id;         /* Thread ID */
-    list_node_t     node;       /* Thread list */
-    int             priority;   /* Thread priority*/
+    thread_id_t         id;             /* Thread ID */
+    list_node_t         thread_list;    /* Thread list */
+    list_node_t         pset_threads;
+    int                 priority;       /* Thread priority*/
 
-    thread_state_t  state;      /* Current thread state */
+    thread_state_t      state;          /* Current thread state */
 
-    void           *stack;      /* Thread stack */
-    size_t          stack_size; /* Thread stack size */
+    processor_set_t    *pset;           /* Processor set this thread
+                                         * was assingned.
+                                         */
 
-    thread_fn_t     func;       /* Routine that this thread
-                                 * would execute.
-                                 */
-    void           *arg;
+    void               *stack;          /* Thread stack */
+    size_t              stack_size;     /* Thread stack size */
 
-    uint8_t         name[32];   /* Thread name */
+    thread_func_t       func;           /* Routine that this thread
+                                         * would execute.
+                                         */
+    void               *arg;            /* Arguments for the roitine */
+
+    uint8_t             name[32];       /* Thread name */
 } thread_t;
+
+
+void
+thread_init_early(void);
 
 
 void
@@ -48,7 +60,6 @@ thread_init(void);
  */
 void
 thread_sleep(_in_ uint64_t ms);
-
 
 /**
  * @brief
@@ -78,12 +89,11 @@ thread_sleep(_in_ uint64_t ms);
 thread_t *
 thread_create(
     _in_ uint8_t       *name,
-    _in_ thread_fn_t    func,
+    _in_ thread_func_t  func,
     _in_ void          *arg,
     _in_ int            priority,
     _in_ void          *stack,
     _in_ size_t         stack_size);
-
 
 /**
  * @brief
@@ -104,7 +114,6 @@ thread_join(
     _in_ thread_t      *t,
     _in_ uint64_t       timeout);
 
-
 /**
  * @brief
  * Terminates the current thread and returns the specified
@@ -114,6 +123,11 @@ thread_join(
  * Return code.
  */
 void
-thread_exit(int ret) __noreturn;
+thread_exit(_in_ int ret) __noreturn;
+
+
+void
+create_bootstrap_thread(_in_ thread_t *t);
+
 
 #endif /* THREAD_H */

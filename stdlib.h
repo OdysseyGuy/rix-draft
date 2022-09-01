@@ -1,5 +1,5 @@
-#ifndef _STDLIB_H_
-#define _STDLIB_H_
+#ifndef STDLIB_H
+#define STDLIB_H
 
 
 #define ROUND_UP(addr, align)    \
@@ -13,4 +13,4 @@
 #define IS_ALIGNED(addr, align) ( !( ((uintptr_t)addr) & (((uintptr_t)align) - 1) ) )
 
 
-#endif /* !_STDLIB_H_ */
+#endif /* STDLIB_H */

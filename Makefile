@@ -46,6 +46,9 @@ kernel: clean
 
 	$(CC) -c $(CFLAGS) printf.c -o $(BUILD_DIR_OBJ)/printf.o
 
+	$(CC) -c $(CFLAGS) cpu_data.c -o $(BUILD_DIR_OBJ)/cpu_data.o
+	$(CC) -c $(CFLAGS) thread.c -o $(BUILD_DIR_OBJ)/thread.o
+
 	$(CC) -c $(CFLAGS) pmm.c -o $(BUILD_DIR_OBJ)/pmm.o
 	$(CC) -c $(CFLAGS) vmm.c -o $(BUILD_DIR_OBJ)/vmm.o
 	$(CC) -c $(CFLAGS) vm.c -o $(BUILD_DIR_OBJ)/vm.o
@@ -74,7 +77,8 @@ kernel: clean
 		$(BUILD_DIR_OBJ)/exception.o $(BUILD_DIR_OBJ)/interrupt.o $(BUILD_DIR_OBJ)/balloc.o $(BUILD_DIR_OBJ)/printf.o \
 		$(BUILD_DIR_OBJ)/console.o $(BUILD_DIR_OBJ)/debug.o $(BUILD_DIR_OBJ)/platform.o $(BUILD_DIR_OBJ)/pmm.o \
 		$(BUILD_DIR_OBJ)/kheap.o $(BUILD_DIR_OBJ)/pgalloc.o $(BUILD_DIR_OBJ)/irq.o $(BUILD_DIR_OBJ)/qsort.o \
-		$(BUILD_DIR_OBJ)/vmm.o $(BUILD_DIR_OBJ)/vm.o $(BUILD_DIR_OBJ)/main.o $(BUILD_DIR_OBJ)/init.o \
+		$(BUILD_DIR_OBJ)/vmm.o $(BUILD_DIR_OBJ)/vm.o $(BUILD_DIR_OBJ)/main.o $(BUILD_DIR_OBJ)/init.o  \
+		$(BUILD_DIR_OBJ)/cpu_data.o $(BUILD_DIR_OBJ)/thread.o \
 		-o $(BUILD_DIR_OBJ)/kernel.o
 
 	$(LD) $(LDFLAGS) $(BUILD_DIR_OBJ)/kernel.o -o $(BUILD_DIR)/rix.elf

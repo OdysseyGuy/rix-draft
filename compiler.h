@@ -12,6 +12,7 @@
 #define unlikely(x)         __builtin_expect (!!(x), 0)
 
 #define __is_constant(x)    __builtin_constant_p (x)
+#define __offsetof(t, m)    __builtin_offsetof (t, m)
 
 
 #define unreachable_barrier() asm volatile("")
@@ -57,6 +58,10 @@
 #define __nonnull(...)      __attribute__ ((nonnull (__VA_ARGS__)))
 
 #define __printf(fmt, va)   __attribute__((__format__(__printf__, fmt, va)))
+
+
+#define _in_
+#define _out_
 
 
 #endif /* __GNUC__ || __clang__ */

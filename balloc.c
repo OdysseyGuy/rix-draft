@@ -3,9 +3,7 @@
 #include <stdlib.h>
 #include <balloc.h>
 
-/* kernel.ld */
 extern long __end;
-
 
 uintptr_t boot_alloc_start = (uintptr_t)&__end;
 uintptr_t boot_alloc_end = (uintptr_t)&__end;

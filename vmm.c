@@ -1,6 +1,5 @@
 #include <pmm.h>
 
-
 static list_node_t aspace_list = LIST_INITIAL_VALUE(aspace_list);
 
 #ifndef KERNEL_ASPACE_BASE
@@ -11,7 +10,8 @@ static list_node_t aspace_list = LIST_INITIAL_VALUE(aspace_list);
 #   define KERNEL_ASPACE_SIZE 0x0
 #endif
 
-vmm_aspace_t kernel_aspace = {
+/* The kernel address space. */
+vm_aspace_t kernel_aspace = {
     .base = KERNEL_ASPACE_BASE,
     .size = KERNEL_ASPACE_SIZE,
     .name = "kernel"

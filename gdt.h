@@ -4,8 +4,8 @@
 #define __GDT_H__
 
 /* 64-bit kernel mode selectors */
-#define CODE_SELECTOR   0x08
-#define DATA_SELECTOR   0x10
+#define __KERNEL_CS     0x08
+#define __KERNEL_DS     0x10
 
 /* Access bits */
 #define GDE_ACB_P       0x80    /* Present              */

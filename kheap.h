@@ -5,9 +5,6 @@
 
 #include <stddef.h>
 
-#define _in_
-#define _out_
-
 void *
 kheap_malloc(_in_ size_t size);
 

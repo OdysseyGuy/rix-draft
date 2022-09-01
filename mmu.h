@@ -6,13 +6,13 @@
 
 #define PAGE_SIZE                   4096
 
-#define X86_PAGE_BIT_P              0x0001  /* Present                   */
-#define X86_PAGE_BIT_RW             0x0002  /* Writable                  */
+#define X86_PAGE_BIT_P              0x0001  /* Present */
+#define X86_PAGE_BIT_RW             0x0002  /* Writable */
 #define X86_PAGE_BIT_U              0x0004  /* User/Supervisor (0=s,1=u) */
-#define X86_PAGE_BIT_PWT            0x0008  /* Page Write Through        */
-#define X86_PAGE_BIT_PCD            0x0010  /* Page Cache Disabled       */
-#define X86_PAGE_BIT_PS             0x0080  /* Page Size                 */
-#define X86_PAGE_BIT_G              0x0100  /* Global                    */
+#define X86_PAGE_BIT_PWT            0x0008  /* Page Write Through */
+#define X86_PAGE_BIT_PCD            0x0010  /* Page Cache Disabled */
+#define X86_PAGE_BIT_PS             0x0080  /* Page Size */
+#define X86_PAGE_BIT_G              0x0100  /* Global */
 
 #define X86_MMU_PG_FLAGS            (X86_PAGE_BIT_P | X86_PAGE_BIT_RW)
 
@@ -49,9 +49,8 @@
 
 #include <types.h>
 #include <stdlib.h>
+#include <compiler.h>
 
-#define _in_
-#define _out_
 
 #define IS_PAGE_ALIGNED(addr)   IS_ALIGNED(addr, PAGE_SIZE)
 
@@ -131,7 +130,7 @@ mmu_get_mapping(
 /**
  * @brief
  * Walk the page table structures to see if the mapping between a 
- * virtual address and a physical exists. Also check the flags.
+ * virtual address and a physical exists.
  */
 mmu_status_t
 mmu_check_mapping(
@@ -143,6 +142,15 @@ mmu_check_mapping(
 /**
  * @brief
  * Maps a virtual address to physical address.
+ * 
+ * @param pml4
+ * Base address of the PML4 table.
+ * 
+ * @param paddr
+ * Phyiscal address.
+ * 
+ * @param mmu_flags
+ * Flags to set while mapping.
  */
 mmu_status_t
 mmu_map_addr(
@@ -151,6 +159,10 @@ mmu_map_addr(
     _in_ paddr_t        paddr,
     _in_ uint64_t       mmu_flags);
 
+/**
+ * @brief
+ * Remove the virtual to physical address mapping from mmu.
+ */
 mmu_status_t
 mmu_unmap_addr(
     _in_ vaddr_t        vaddr,

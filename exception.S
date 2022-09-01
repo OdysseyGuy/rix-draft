@@ -130,7 +130,7 @@ ELF_DATA(_idt)
     .set    i , 0
     .rept   NUM_ISR
         .short  0x0000          # offset
-        .short  CODE_SELECTOR   # code selector
+        .short  __KERNEL_CS     # code selector
 
         .byte   0x00
         .byte   0x8e            # present, ring 0, 64-bit interrupt gate
