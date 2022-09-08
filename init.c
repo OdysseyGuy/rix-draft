@@ -31,6 +31,7 @@ hook_cmp(const void *hook1, const void *hook2)
 extern void
 qsort(void *arr, size_t n, size_t es, int (*cmp)(const void *, const void *));
 
+/* TODO: Sort this at build time. */
 void __init_func
 init_hooks_init(void)
 {

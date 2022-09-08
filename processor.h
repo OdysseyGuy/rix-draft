@@ -21,6 +21,10 @@ typedef enum processor_state {
 
 
 struct processor_set {
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
     list_node_t pset_list_node; /* List of processor sets. */
     list_t      processor_list; /* List of processors belonging
                                  * to this processor set.
@@ -34,11 +38,36 @@ struct processor_set {
 
     list_t      tasks;          /* Tasks assigned. */
     uint32_t    task_count;     /* Count of task assigned. */
+<<<<<<< Updated upstream
+=======
+=======
+    list_node_t         pset_list_node; /* List of processor sets. */
+    list_t              processor_list; /* List of processors belonging
+                                         * to this processor set.
+                                         */
+    uint32_t            processor_count;/* Count of processor in this set. */
+    
+    list_t              threads;
+    uint32_t            thread_count;   /* Total threads assigned to this
+                                         * processor set.
+                                         */
+
+    list_t              tasks;          /* Tasks assigned. */
+    uint32_t            task_count;     /* Count of task assigned. */
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 };
 
 
 typedef struct processor {
     list_node_t         pset_node;
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+    list_node_t         plist_node;
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
     bool                is_smt;         /* Simultaneous multithreading. */
 
@@ -59,6 +88,17 @@ typedef struct processor {
 
 extern list_t processor_list;
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+
+void
+pset_init(_in_ processor_set_t *pset);
+
+
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 /**
  * @brief
  * Add processor to a processor set.

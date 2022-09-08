@@ -49,7 +49,22 @@
 
 #include <types.h>
 #include <stdlib.h>
+<<<<<<< Updated upstream
 #include <compiler.h>
+=======
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+#include <compiler.h>
+=======
+<<<<<<< Updated upstream
+=======
+#include <stdbool.h>
+#include <compiler.h>
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
 
 #define IS_PAGE_ALIGNED(addr)   IS_ALIGNED(addr, PAGE_SIZE)
@@ -58,7 +73,7 @@
 #   define KERNEL_ASPACE_BASE   0xffffff8000000000
 #endif
 
-/* Physical to kernel address space */
+/* Physical to kernel virtual address space */
 #define X86_P2KV(x)             ((uintptr_t)(x) + KERNEL_ASPACE_BASE)
 #define X86_KV2P(x)             ((uintptr_t)(x) - KERNEL_ASPACE_BASE)
 

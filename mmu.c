@@ -6,8 +6,8 @@
 #include <string.h>
 
 
-uint8_t g_paddr_width = 32;
-uint8_t g_vaddr_width = 48;
+uint8_t paddr_width = 32;
+uint8_t vaddr_width = 48;
 
 
 bool
@@ -18,7 +18,7 @@ mmu_check_vaddr(vaddr_t vaddr)
         return false;
     }
 
-    uint64_t lohalf_max = (((uint64_t)1ULL << g_vaddr_width - 1) - 1);
+    uint64_t lohalf_max = (((uint64_t)1ULL << vaddr_width - 1) - 1);
     uint64_t hihalf_min = ~lohalf_max;
 
 
@@ -35,7 +35,7 @@ mmu_check_paddr(paddr_t paddr)
         return false;
     }
 
-    return (paddr <= (((uint64_t) 1ULL << g_paddr_width) - 1));
+    return (paddr <= (((uint64_t) 1ULL << paddr_width) - 1));
 }
 
 
@@ -425,6 +425,6 @@ mmu_init(void)
 
     /* query virtual and physical address sizes */
     uint32_t addr_width = cpuid_get_addr_width();
-    g_paddr_width = (uint8_t)(addr_width & 0xff);
-    g_vaddr_width = (uint8_t)((addr_width >> 8) & 0xff);
+    paddr_width = (uint8_t)(addr_width & 0xff);
+    vaddr_width = (uint8_t)((addr_width >> 8) & 0xff);
 }
