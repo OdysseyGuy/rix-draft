@@ -23,10 +23,9 @@
         __builtin_unreachable();    \
     } while(0)
 
+#define stringify(x)        #x
 
 #define __fallthrough       __attribute__((__fallthrough__))
-
-#define stringify(x)        #x
 
 
 #define __unused            __attribute__((unused))

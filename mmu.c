@@ -22,7 +22,7 @@ mmu_check_vaddr(vaddr_t vaddr)
     uint64_t hihalf_min = ~lohalf_max;
 
 
-    /* check if vaddr is cannonical */
+    /* check if vaddr is canonical */
     return (vaddr > lohalf_max || vaddr < hihalf_min);
 }
 
@@ -410,10 +410,10 @@ mmu_init(void)
     set_cr0(cr0);
 
     cr4 = get_cr4();
-    if (check_smap_avaibility()) {
+    if (check_smap_availability()) {
         cr4 |= X86_CR4_SMAP_BIT;
     }
-    if (check_smep_avaibility()) {
+    if (check_smep_availability()) {
         cr4 |= X86_CR4_SMEP_BIT;
     }
     set_cr4(cr4);

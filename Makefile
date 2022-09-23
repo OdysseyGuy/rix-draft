@@ -27,7 +27,7 @@ CFLAGS += -I.
 CFLAGS += -DKERNEL_VMA_BASE=$(KERNEL_VMA_BASE)
 CFLAGS += -DKERNEL_ASPACE_BASE=$(KERNEL_ASPACE_BASE)
 CFLAGS += -DKERNEL_ASPACE_SIZE=$(KERNEL_ASPACE_SIZE)
-CFLAGS += -g -gdwarf-2 -O0
+# CFLAGS += -g -gdwarf-2 -O0
 
 LDFLAGS := -z max-page-size=4096 -T $(BUILD_DIR_OBJ)/kernel.generated.lds -n -nostdlib -mno-red-zone -flto
 

@@ -36,7 +36,7 @@
 #define X86_2MB_PAGE_OFFSET_MASK    0x1fffff
 #define X86_1GB_PAGE_OFFSET_MASK    0x3fffffff
 
-/* extrating incides from vaddr */
+/* extracting indices from vaddr */
 #define VADDR_TO_PML4_INDEX(vaddr)  ((vaddr) >> PML4_SHIFT) & (0x1FF)
 #define VADDR_TO_PDP_INDEX(vaddr)   ((vaddr) >> PDP_SHIFT) & (0x1FF)
 #define VADDR_TO_PD_INDEX(vaddr)    ((vaddr) >> PD_SHIFT) & (0x1FF)
@@ -49,22 +49,8 @@
 
 #include <types.h>
 #include <stdlib.h>
-<<<<<<< Updated upstream
-#include <compiler.h>
-=======
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-#include <compiler.h>
-=======
-<<<<<<< Updated upstream
-=======
 #include <stdbool.h>
 #include <compiler.h>
->>>>>>> Stashed changes
->>>>>>> Stashed changes
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 
 
 #define IS_PAGE_ALIGNED(addr)   IS_ALIGNED(addr, PAGE_SIZE)
@@ -104,7 +90,7 @@ mmu_init(void);
 
 /**
  * @brief
- * Check if virtual address is page aligned and cannonical.
+ * Check if virtual address is page aligned and canonical.
  */
 bool
 mmu_check_vaddr(_in_ vaddr_t vaddr);

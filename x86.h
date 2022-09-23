@@ -3,55 +3,7 @@
 #ifndef X86_H
 #define X86_H
 
-<<<<<<< Updated upstream
-/* Control Register 0 */
-#define X86_CR0_WP_BIT          0x00010000 /* Write Protect */
-#define X86_CR0_PG_BIT          0x80000000 /* Paging enabled */
-=======
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-/* Control Register 0 */
-#define X86_CR0_WP_BIT          0x00010000 /* Write Protect */
-#define X86_CR0_PG_BIT          0x80000000 /* Paging enabled */
-=======
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-/*
- * Control Register 0
- */
-#define X86_CR0_WP_BIT          0x00010000  /* Write Protect            */
-#define X86_CR0_PG_BIT          0x80000000  /* Paging enabled           */
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 
-/* Control Register 4 */
-#define X86_CR4_PAE_BIT         0x00000020 /* Physical Address Extensions */
-#define X86_CR4_SMEP_BIT        0x00200000 /* Supervisor Mode Execution Protection */
-#define X86_CR4_SMAP_BIT        0x00400000 /* Supervisor Mode Access Prevention */
-
-<<<<<<< Updated upstream
-/* Model specific register */
-#define X86_IA32_MSR_APIC       0x0000001b /* APIC */
-=======
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-/* Model specific register */
-#define X86_IA32_MSR_APIC       0x0000001b /* APIC */
-=======
->>>>>>> Stashed changes
-/*
- * Model specific register
- */
-#define X86_IA32_MSR_APIC       0x0000001b  /* Extended Feature Enable Register */
-#define X86_IA32_MSR_EFER       0xc0000080  /* Extended Feature Enable Register */
-<<<<<<< Updated upstream
-=======
-=======
 /* Control Register 0 */
 #define X86_CR0_WP_BIT              0x00010000 /* Write Protect */
 #define X86_CR0_PG_BIT              0x80000000 /* Paging enabled */
@@ -61,17 +13,11 @@
 #define X86_CR4_SMEP_BIT            0x00200000 /* Supervisor Mode Execution Protection */
 #define X86_CR4_SMAP_BIT            0x00400000 /* Supervisor Mode Access Prevention */
 
-/* Model specific register */
-#define X86_IA32_MSR_APIC           0x0000001b /* APIC */
->>>>>>> Stashed changes
->>>>>>> Stashed changes
->>>>>>> Stashed changes
->>>>>>> Stashed changes
-
 /* MSR EFER */
 #define X86_IA32_MSR_EFER           0xc0000080
 #define     X86_IA32_MSR_EFER_LME   0x00000100 /* Long Mode Enable */
 #define     X86_IA32_MSR_EFER_NXE   0x00001000 /* No-Execute Enable */
+
 
 
 #ifndef __ASSEMBLY__
@@ -79,7 +25,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <compiler.h>
-
 
 /**
  * @brief
@@ -202,7 +147,7 @@ cpuid_get_addr_width(void)
 }
 
 static inline bool
-check_smep_avaibility(void)
+check_smep_availability(void)
 {
     uint32_t eax, ebx, ecx, edx; 
     cpuid(0x7, &eax, &ebx, &ecx, &edx);
@@ -211,7 +156,7 @@ check_smep_avaibility(void)
 }
 
 static inline bool
-check_smap_avaibility(void)
+check_smap_availability(void)
 {
     uint32_t eax, ebx, ecx, edx; 
     cpuid(0x7, &eax, &ebx, &ecx, &edx);
@@ -322,22 +267,8 @@ restore_flags(_in_ x86_flags_t flags)
     );
 }
 
-<<<<<<< Updated upstream
-static inline uint64_t
-get_fs_offset(uint64_t offset)
-=======
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-static inline uint64_t
-get_fs_offset(uint64_t offset)
-=======
-<<<<<<< Updated upstream
-=======
 static inline uint64_t
 get_fs_offset(_in_ uint64_t offset)
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 {
     uint64_t ret;
     asm volatile(
@@ -349,15 +280,7 @@ get_fs_offset(_in_ uint64_t offset)
 }
 
 static inline uint64_t
-<<<<<<< Updated upstream
-get_gs_offset(uint64_t offset)
-=======
-<<<<<<< Updated upstream
-get_gs_offset(uint64_t offset)
-=======
 get_gs_offset(_in_ uint64_t offset)
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 {
     uint64_t ret;
     asm volatile(
@@ -369,17 +292,9 @@ get_gs_offset(_in_ uint64_t offset)
 }
 
 static inline void
-<<<<<<< Updated upstream
-set_fs_offset(uint64_t offset, uint64_t val)
-=======
-<<<<<<< Updated upstream
-set_fs_offset(uint64_t offset, uint64_t val)
-=======
 set_fs_offset(
     _in_ uint64_t offset,
     _in_ uint64_t val)
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 {
     asm volatile(
         "movq %0, %%fs:%1"
@@ -389,17 +304,9 @@ set_fs_offset(
 }
 
 static inline void
-<<<<<<< Updated upstream
-set_gs_offset(uint64_t offset, uint64_t val)
-=======
-<<<<<<< Updated upstream
-set_gs_offset(uint64_t offset, uint64_t val)
-=======
 set_gs_offset(
     _in_ uint64_t offset,
     _in_ uint64_t val)
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 {
     asm volatile(
         "movq %0, %%gs:%1"
@@ -407,15 +314,6 @@ set_gs_offset(
         : "memory"
     );
 }
-
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 #endif /* !__ASSEMBLY__ */
 
 #endif /* X86_H */

@@ -106,7 +106,7 @@ pmm_alloc_page(_out_ vm_page_t **page);
  * List of the allocated pages.
  * 
  * @returns
- * Number of pages allocted.
+ * Number of pages allocated.
  */
 size_t
 pmm_alloc_range(
@@ -154,8 +154,7 @@ pmm_free_page(_in_ vm_page_t *page);
 
 /**
  * @brief
- * Allocate pages from the kernel area and return the pointer
- * in kernel address space.
+ * Allocate pages from the kernel virtual address space.
  */
 void *
 pmm_alloc_kpages(
@@ -220,16 +219,6 @@ vm_aspace_t *
 vaddr_to_vm_aspace(_in_ vaddr_t addr);
 
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 /**
  * @brief
  * Allocates a physical page and maps it to the virtual page.
@@ -239,34 +228,13 @@ vaddr_to_vm_aspace(_in_ vaddr_t addr);
  * 
  * @param name
  * 
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
+ * @param count
+ * Number of pages to allocate.
  * 
- * @param count
- * Number of pages to allocate.
- *  
-<<<<<<< Updated upstream
-=======
-=======
- * @param count
- * Number of pages to allocate.
- *
->>>>>>> Stashed changes
->>>>>>> Stashed changes
  * @param paddr 
  * @param ptr 
  * @return pmm_status_t 
  */
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 pmm_status_t
 vmm_alloc_physical(
     _in_ vm_aspace_t   *aspace,

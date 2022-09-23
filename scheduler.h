@@ -17,10 +17,10 @@ thread_reschedule(void);
  * the cpu to other waiting threads of the same priority.
  * 
  * If there is not thread in the waiting queue with same priority
- * then the current thread would continue its exection.
+ * then the current thread would continue its execution.
  */
 void
-thread_yeild(void);
+thread_yield(void);
 
 /**
  * @brief

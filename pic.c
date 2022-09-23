@@ -20,17 +20,20 @@
  *          offsets, overriding the default configurations.
  */
 static void
-pic_remap(uint32_t offset1, uint32_t offset2) {
+pic_remap(uint32_t offset1, uint32_t offset2)
+{
     
 }
 
 void
-pic_init(void) {
+pic_init(void)
+{
     /* pic_remap(); */
 }
 
 void
-pic_send_eoi(uint8_t irq) {
+pic_send_eoi(uint8_t irq)
+{
     outp8(PIC1_COMMAND, PIC_EOI);
     
     /* if the irq came from slave then we need to send eoi

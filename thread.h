@@ -28,7 +28,7 @@ typedef struct thread {
     thread_state_t      state;          /* Current thread state */
 
     processor_set_t    *pset;           /* Processor set this thread
-                                         * was assingned.
+                                         * was assigned.
                                          */
 
     void               *stack;          /* Thread stack */
@@ -37,7 +37,7 @@ typedef struct thread {
     thread_func_t       func;           /* Routine that this thread
                                          * would execute.
                                          */
-    void               *arg;            /* Arguments for the roitine */
+    void               *arg;            /* Arguments for the routine */
 
     uint8_t             name[32];       /* Thread name */
 } thread_t;
@@ -69,7 +69,7 @@ thread_sleep(_in_ uint64_t ms);
  * Name of the thread.
  * 
  * @param func
- * Threaded fucntion to be executed.
+ * Threaded function to be executed.
  * 
  * @param arg
  * Arguments to pass to the threaded function.

@@ -308,7 +308,7 @@ pmm_alloc_kpages(
         return paddr_to_kvaddr(vm_page_to_paddr(page));
     }
 
-    /* allocate a contineous run of physical memory */
+    /* allocate a contiguous run of physical memory */
 }
 
 
@@ -360,3 +360,4 @@ paddr_to_vm_page(paddr_t addr)
     
     return NULL;
 }
+

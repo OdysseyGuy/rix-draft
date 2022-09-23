@@ -2,55 +2,31 @@
 
 #include <processor.h>
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-list_t          processor_list;
-uint32_t        processor_count;
-
-processor_set_t pset;
-<<<<<<< Updated upstream
-=======
-=======
 #define MAX_NCPUS   64
 
-processor_t     processor_array[MAX_NCPUS];
+processor_t         processor_array[MAX_NCPUS];
 
-processor_set_t default_pset;
+processor_set_t     default_pset;
 
-list_t          pset_list;
-uint8_t         pset_count;
->>>>>>> Stashed changes
->>>>>>> Stashed changes
+list_t              pset_list;
+uint8_t             pset_count;
 
-extern list_t   thread_list;
-extern uint32_t thread_count;
+extern list_t       thread_list;
+extern uint32_t     thread_count;
 
-processor_t     bsp; /* bootstrap processor */
+processor_t         bsp; /* bootstrap processor */
 
 
 void
 processor_bootstrap(void)
 {
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-    /* Intialize the bootstrap processor */
-    processor_init(&bsp, 0, &pset);
-}
-
-<<<<<<< Updated upstream
-=======
-=======
     list_init(&processor_list);
 
     list_init(&pset_list);
     list_add(&pset_list, &default_pset.pset_list_node);
     pset_count = 1;
 
-    /* Intialize the bootstrap processor */
+    /* Initialize the bootstrap processor */
     processor_array[0] = bsp;
     processor_init(&bsp, 0, &default_pset);
 }
@@ -65,46 +41,24 @@ pset_init(_in_ processor_set_t *pset)
     list_init(&pset->tasks);
     pset->task_count = 0;
 }
->>>>>>> Stashed changes
->>>>>>> Stashed changes
+
 
 /**
  * @details
- * Processor intialization routine. Called once per proccessor.
+ * Processor initialization routine. Called once per processor.
  * Assigns the processor to the processor set.
-<<<<<<< Updated upstream
- * 
-=======
-<<<<<<< Updated upstream
- * 
-=======
- *
->>>>>>> Stashed changes
->>>>>>> Stashed changes
- * Sets the proccessor in the idle state.
+ * Sets the processor in the idle state.
  */
 void
 processor_init(
     processor_t        *processor,
     uint32_t            num,
-<<<<<<< Updated upstream
-    processor_set_t    *processor_set)
-{
-    processor->cpu_number = num;
-=======
-<<<<<<< Updated upstream
-    processor_set_t    *processor_set)
-{
-    processor->cpu_number = num;
-=======
     processor_set_t    *pset)
 {
     processor->cpu_number = num;
     processor->pset = NULL;
 
     processor->idle_thread;
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 }
 
 void

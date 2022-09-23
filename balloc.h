@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 
-#ifndef _BALLOC_H_
-#define _BALLOC_H_
+#ifndef BALLOC_H 
+#define BALLOC_H 
 
 #include <stdint.h>
 #include <stddef.h>
@@ -19,4 +19,4 @@ void *
 balloc(_in_ size_t len);
 
 
-#endif /* !_BALLOC_H_ */
+#endif /* BALLOC_H */
