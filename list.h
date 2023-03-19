@@ -11,7 +11,6 @@
 #define container_of(ptr, type, member) \
     ((type *)((addr_t)(ptr) - offsetof(type, member)))
 
-
 /**
  * @brief
  * Circular doubly linked-list.
@@ -71,15 +70,11 @@ list_is_in_list(_in_ list_node_t *head)
     return true;
 }
 
-
 /**
  * @brief
  * Insert a new entry after the specified head.
  */
-static inline void
-list_add(
-    _in_ list_node_t *head,
-    _in_ list_node_t *new_entry)
+static inline void list_add(_in_ list_node_t *head, _in_ list_node_t *new_entry)
 {
     new_entry->next = head->next;
     new_entry->prev = head;
@@ -92,10 +87,7 @@ list_add(
  * @brief
  * Insert a new entry before the specified head.
  */
-static inline void
-list_add_tail(
-    _in_ list_node_t *head,
-    _in_ list_node_t *new_entry)
+static inline void list_add_tail(_in_ list_node_t *head, _in_ list_node_t *new_entry)
 {
     new_entry->prev = head->prev;
     new_entry->next = head;
@@ -104,21 +96,17 @@ list_add_tail(
     head->prev = new_entry;
 }
 
-
 /**
  * @brief
  * Replace old entry with new one.
  */
-static inline void
-list_replace(
-    _in_ list_node_t *old_item,
-    _in_ list_node_t *new_entry)
+static inline void list_replace(_in_ list_node_t *old_entry, _in_ list_node_t *new_entry)
 {
-    new_entry->next = old_item->next;
-    new_entry->prev = old_item->prev;
+    new_entry->next = old_entry->next;
+    new_entry->prev = old_entry->prev;
 
-    old_item->prev->next = new_entry;
-    old_item->next->prev = new_entry;
+    old_entry->prev->next = new_entry;
+    old_entry->next->prev = new_entry;
 }
 
 /**
@@ -128,8 +116,7 @@ list_replace(
  * @param entry
  * Entry to delete.
  */
-static inline void
-list_delete(_in_ list_node_t *entry)
+static inline void list_delete(_in_ list_node_t *entry)
 {
     entry->next->prev = entry->prev;
     entry->prev->next = entry->next;
@@ -142,8 +129,7 @@ list_delete(_in_ list_node_t *entry)
  * @brief
  * Removes the head from the list and returns it.
  */
-static inline list_node_t *
-list_remove_head(_in_ list_node_t *head)
+static inline list_node_t * list_remove_head(_in_ list_node_t *head)
 {
     if (head->next != head) {
         list_node_t* item = head->next;
@@ -169,8 +155,7 @@ list_remove_head(_in_ list_node_t *head)
  * @brief
  * Removes the tail from the list and returns it.
  */
-static inline list_node_t *
-list_remove_tail(_in_ list_node_t *list)
+static inline list_node_t * list_remove_tail(_in_ list_node_t *list)
 {
     if (list->prev != list) {
         list_node_t* item = list->prev;
@@ -196,8 +181,7 @@ list_remove_tail(_in_ list_node_t *list)
  * @brief
  * Returns the next entry from the list.
  */
-static inline list_node_t *
-list_peek_head(_in_ list_node_t *list)
+static inline list_node_t * list_peek_head(_in_ list_node_t *list)
 {
     if (list->next != list) {
         return list->next;
@@ -221,8 +205,7 @@ list_peek_head(_in_ list_node_t *list)
  * @brief
  * Returns the previous entry from the list.
  */
-static inline list_node_t *
-list_peek_tail(_in_ list_node_t *list)
+static inline list_node_t * list_peek_tail(_in_ list_node_t *list)
 {
     if (list->prev != list) {
         return list->prev;
@@ -272,8 +255,7 @@ list_peek_tail(_in_ list_node_t *list)
  * @brief
  * Returns the size of the list.
  */
-static inline size_t
-list_length(_in_ const list_node_t *list)
+static inline size_t list_length(_in_ const list_node_t *list)
 {
     size_t cnt = 0;
     const list_node_t* node = list;
@@ -285,31 +267,27 @@ list_length(_in_ const list_node_t *list)
  * @brief
  * Split the contents of list after (but not including) pos.
  */
-static inline void
-list_split_after(
-    _in_  list_node_t   *list,
-    _in_  list_node_t   *pos,
-    _out_ list_node_t   *split_to)
+static inline void list_split_after(_in_ list_node_t *list, _in_ list_node_t *pos,
+                                    _out_ list_node_t *to)
 {
     if (pos->next == list) {
-        list_init(split_to);
+        list_init(to);
         return;
     }
 
-    split_to->prev = list->prev;
-    split_to->prev->next = split_to;
-    split_to->next = pos->next;
-    split_to->next->prev = split_to;
+    to->prev = list->prev;
+    to->prev->next = to;
+    to->next = pos->next;
+    to->next->prev = to;
     
     pos->next = list;
     list->prev = pos;
 }
 
-static inline void
-list_splice_after(_in_ list_node_t* splice_from, _in_ list_node_t* pos)
+static inline void list_splice_after(_in_ list_node_t* from, _in_ list_node_t* pos)
 {
-    if (list_is_empty(splice_from)) {
-        list_init(splice_from);
+    if (list_is_empty(from)) {
+        list_init(from);
     }
 }
 

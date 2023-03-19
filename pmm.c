@@ -6,33 +6,27 @@
 #include <string.h>
 
 
-#define FRAME_SIZE              PAGE_SIZE
-#define ZONE_FRAME_COUNT(zone)  (zone->size / FRAME_SIZE)
-
+#define FRAME_SIZE PAGE_SIZE
+#define ZONE_FRAME_COUNT(zone) (zone->size / FRAME_SIZE)
 
 #define ADDRESS_BELONGS_TO_ZONE(addr, zone)                                         \
     (((addr) >= (zone)->base) && ((addr) <= ((zone)->base + (zone)->size - 1)))
-
 
 #define PAGE_BELONGS_TO_ZONE(pgaddr, zone)                                          \
     ((uintptr_t)(pgaddr) >= (uintptr_t)(zone)->page_array) &&                       \
     ((uintptr_t)(pgaddr) < ((uintptr_t)(zone)->page_array + ZONE_FRAME_COUNT(zone)))
 
-
 #define PAGE_INDEX_IN_ZONE(page, zone)                                              \
     (((uintptr_t)page - (uintptr_t)(zone)->page_array) / sizeof(vm_page_t))
-
 
 #define PADDR_FROM_ZONE_PAGE(page, zone)                                            \
     (paddr_t)PAGE_INDEX_IN_ZONE(page, zone) * PAGE_SIZE + (zone)->base;
 
 
-
 static list_node_t zone_list = LIST_INITIAL_VALUE(zone_list);
 
 
-pmm_status_t
-pmm_add_zone(_in_ pmm_zone_t *zone)
+pmm_status_t pmm_add_zone(_in_ pmm_zone_t *zone)
 {
     if (!(zone->size > 0)) {
         return PMM_ERR_INVALID_ARGS;
@@ -60,11 +54,7 @@ pmm_add_zone(_in_ pmm_zone_t *zone)
     }
 }
 
-
-pmm_status_t
-pmm_alloc_pages(
-    uint32_t    *count,
-    list_node_t *list)
+pmm_status_t pmm_alloc_pages(uint32_t *count, list_node_t *list)
 {
     /* fast path */
     if (*count == 0) {
@@ -113,9 +103,7 @@ done:
     return PMM_NO_ERROR;
 }
 
-
-pmm_status_t
-pmm_alloc_page(vm_page_t **out_page)
+pmm_status_t pmm_alloc_page(vm_page_t **out_page)
 {
     /* walk through the arena searching for free page */
     pmm_zone_t *zone;
@@ -139,12 +127,7 @@ done:
     return PMM_NO_ERROR;
 }
 
-
-size_t
-pmm_alloc_range(
-    paddr_t     address,
-    size_t      count,
-    list_node_t *list)
+size_t pmm_alloc_range(paddr_t address, size_t count, list_node_t *list)
 {
     /* make sure the address is page aligned */
     address = ROUND_DOWN(address, PAGE_SIZE);
@@ -187,9 +170,7 @@ done:
     return allocated;
 }
 
-
-size_t
-pmm_free_pages(list_t *head)
+size_t pmm_free_pages(list_t *head)
 {
     size_t count = 0;
     while(!list_is_empty(head)) {
@@ -212,9 +193,7 @@ pmm_free_pages(list_t *head)
     return count;
 }
 
-
-size_t
-pmm_free_page(vm_page_t *page)
+size_t pmm_free_page(vm_page_t *page)
 {
     list_node_t list;
     list_init(&list);
@@ -311,15 +290,11 @@ pmm_alloc_kpages(
     /* allocate a contiguous run of physical memory */
 }
 
-
-size_t
-pmm_free_kpages(void *ptr, uint32_t count)
+size_t pmm_free_kpages(void *ptr, uint32_t count)
 {
 }
 
-
-void *
-paddr_to_kvaddr(paddr_t pa)
+void * paddr_to_kvaddr(paddr_t pa)
 {
     mmu_initial_mapping_t *map = mmu_initial_mappings;
     while (map->size > 0) {
@@ -332,9 +307,7 @@ paddr_to_kvaddr(paddr_t pa)
     return NULL;
 }
 
-
-paddr_t
-vm_page_to_paddr(vm_page_t *page)
+paddr_t vm_page_to_paddr(vm_page_t *page)
 {
     pmm_zone_t *zone;
     list_for_each_entry(zone, &zone_list, node) {
@@ -346,9 +319,7 @@ vm_page_to_paddr(vm_page_t *page)
     return -1;
 }
 
-
-vm_page_t *
-paddr_to_vm_page(paddr_t addr)
+vm_page_t * paddr_to_vm_page(paddr_t addr)
 {
     pmm_zone_t *zone;
     list_for_each_entry(zone, &zone_list, node) {
@@ -360,4 +331,3 @@ paddr_to_vm_page(paddr_t addr)
     
     return NULL;
 }
-

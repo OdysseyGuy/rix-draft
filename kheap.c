@@ -7,12 +7,10 @@
 #include <pgalloc.h>
 #include <stdlib.h>
 
-
 typedef struct free_heap_chunk {
     list_node_t node;
     size_t      len;
 } free_heap_chunk_t;
-
 
 typedef struct heap {
     void    *base;
@@ -21,45 +19,30 @@ typedef struct heap {
     list_t  free_list;
 } heap_t;
 
-
 typedef struct alloc_struct {
     void    *ptr;
     size_t  size;
 } alloc_struct_t;
 
-
 static heap_t heap_;
 
-
-void *
-kheap_malloc(size_t size)
+void * kheap_malloc(size_t size)
 {
-
 }
 
-void *
-kheap_calloc(size_t count, size_t size)
+void * kheap_calloc(size_t count, size_t size)
 {
-
 }
 
-void *
-kheap_realloc(
-    void    *ptr,
-    size_t  size)
+void * kheap_realloc(void *ptr, size_t size)
 {
-
 }
 
-void
-kheap_free(void *ptr)
+void kheap_free(void *ptr)
 {
-
 }
 
-
-static free_heap_chunk_t *
-heap_insert_free_chunk(_in_ free_heap_chunk_t *chunk)
+static free_heap_chunk_t * heap_insert_free_chunk(_in_ free_heap_chunk_t *chunk)
 {
     vaddr_t chunk_end = (vaddr_t)chunk + chunk->len;
 
@@ -78,20 +61,14 @@ heap_insert_free_chunk(_in_ free_heap_chunk_t *chunk)
 try_merge:
 }
 
-
-static free_heap_chunk_t *
-heap_create_free_chunk(
-    _in_ void   *ptr,
-    _in_ size_t len)
+static free_heap_chunk_t * heap_create_free_chunk(_in_ void *ptr, _in_ size_t len)
 {
     free_heap_chunk_t *chunk = (free_heap_chunk_t *)ptr;
     chunk->len = len;
     return chunk;
 }
 
-
-void
-kheap_init(void)
+void kheap_init(void)
 {
     size_t len;
     void *ptr = kpage_first_alloc(&len);

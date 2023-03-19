@@ -8,8 +8,7 @@
  * Executes another thread. It simply picks the next thread
  * from the queue and executes it.
  */
-void
-thread_reschedule(void);
+void thread_reschedule(void);
 
 /**
  * @brief
@@ -19,8 +18,7 @@ thread_reschedule(void);
  * If there is not thread in the waiting queue with same priority
  * then the current thread would continue its execution.
  */
-void
-thread_yield(void);
+void thread_yield(void);
 
 /**
  * @brief
@@ -29,14 +27,12 @@ thread_yield(void);
  * The function doesn't return until the thread is unblocked
  * by some other module.
  */
-void
-thread_block(void);
+void thread_block(void);
 
 /**
  * @brief
  * Unblock the specified thread.
  */
-void
-thread_unblock(_in_ thread_t *t);
+void thread_unblock(_in_ thread_t *t);
 
 #endif /* SCHEDULER_H */

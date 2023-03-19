@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+
 #ifndef PGALLOC_H
 #define PGALLOC_H
 
@@ -6,18 +8,9 @@
 #include <compiler.h>
 
 
-void *
-kpage_alloc(_in_ size_t pages);
-
-
-size_t
-kpage_free(
-    _in_ void      *ptr,
-    _in_ size_t     pages);
-
-
-void *
-kpage_first_alloc(_out_ size_t *size_return);
+void * kpage_alloc(size_t pages);
+size_t kpage_free(void *ptr, size_t pages);
+void * kpage_first_alloc(size_t *size);
 
 
 #endif /* PGALLOC_H */

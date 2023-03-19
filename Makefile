@@ -1,13 +1,13 @@
-AS := x86_64-elf-as
-CC := x86_64-elf-gcc
-LD := x86_64-elf-gcc
+AS      := x86_64-elf-as
+CC      := x86_64-elf-gcc
+LD      := x86_64-elf-gcc
 OBJCOPY := x86_64-elf-objcopy
 
-KERNEL_VMA_BASE := 0xffffffff80000000
+KERNEL_VMA_BASE    := 0xffffffff80000000
 KERNEL_ASPACE_BASE := 0xffffff8000000000
 KERNEL_ASPACE_SIZE := 0x0000008000000000
 
-BUILD_DIR := build
+BUILD_DIR     := build
 BUILD_DIR_OBJ := build/obj
 
 # CFLAGS := -Wall \

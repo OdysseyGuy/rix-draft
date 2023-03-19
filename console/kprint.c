@@ -1,24 +1,18 @@
 #include <console/console.h>
 
-
+/* List containing all the registered consoles. */
 static console_t *console_list;
-
 
 /**
  * @brief
  * Calls the specified console and writes the text of spcified length.
  */
-static void
-console_write(
-    _in_ console_t     *con,
-    _in_ const uint8_t *text,
-    _in_ size_t         len)
+static void console_write(_in_ console_t *con, _in_ const uint8_t *text, _in_ size_t len)
 {
     con->write(con, text, len);
 }
 
-void
-register_console(console_t *newcon)
+void register_console(console_t *newcon)
 {
     console_t *con;
     for (con = console_list; con != NULL; con = con->next) {
@@ -36,8 +30,7 @@ register_console(console_t *newcon)
     }
 }
 
-void
-unregister_console(console_t *delcon)
+void unregister_console(console_t *delcon)
 {
     console_t *con;
 

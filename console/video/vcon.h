@@ -6,10 +6,9 @@
 #include <stdint.h>
 #include <console/console.h>
 
-
 /**
  * @brief
- * Video-console specific data.
+ * Video-console data.
  */
 typedef struct vc_info {
     uint32_t    vc_col;     /* Columns */

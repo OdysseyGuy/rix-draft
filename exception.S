@@ -3,8 +3,8 @@
 #include <asm.h>
 #include <gdt.h>
 
-#define NUM_ISR 256
 
+#define NUM_ISR 256
 
     # Interrupt service routine stub
     .section .text.isr
@@ -39,6 +39,8 @@ _isr:
     .endr
 
 
+    # Generic interrupt service routine passes the control to x86_int_handler()
+    .section .text.isr.common
 isr_common:
     # Clear the direction bit
     cld
@@ -60,8 +62,9 @@ isr_common:
     pushq   %rsi
     pushq   %rdi
 
-    movq    %rsp        , %rdi
-    call    int_handler
+    # call the C interrupt handler
+    movq    %rsp, %rdi
+    call    x86_int_handler
 
     # Restore general purpose registers
     popq    %rdi
@@ -81,18 +84,17 @@ isr_common:
     popq    %r15
 
     # Drop vector number and error code
-    addq    $16         , %rsp
-
+    addq    $16, %rsp
     iretq
 
 
+    # Interrupt descriptor table initialization routine
     .section .text.idt
 ELF_FUNCTION(setup_idt)
     # Loop through the IDT setting up offsets of ISRs
     movabs  $_isr           , %rsi
     movabs  $_idt           , %rdi
     movl    $NUM_ISR        , %ecx
-
 
 .Lprepare_idt:
     mov     %rsi            , %rbx      # offset [15:0]
@@ -109,10 +111,8 @@ ELF_FUNCTION(setup_idt)
 
     loop    .Lprepare_idt
 
-
     # Load the IDT from IDTR
     lidt    _idtr(%rip)
-
     ret
 
 
@@ -129,19 +129,19 @@ ELF_DATA(_idtr)
 ELF_DATA(_idt)
     .set    i , 0
     .rept   NUM_ISR
-        .short  0x0000          # offset
-        .short  __KERNEL_CS     # code selector
+        .short  0x0000      # offset
+        .short  __KERNEL_CS # code selector
 
         .byte   0x00
-        .byte   0x8e            # present, ring 0, 64-bit interrupt gate
+        .byte   0x8e        # present, ring 0, 64-bit interrupt gate
 
-        .short  0x0000          # offset
+        .short  0x0000      # offset
 
-        .short  0x0000          # offset
-        .short  0x0000          # offset
+        .short  0x0000      # offset
+        .short  0x0000      # offset
 
-        .short  0x0000          # reserved
-        .short  0x0000          # reserved
+        .short  0x0000      # reserved
+        .short  0x0000      # reserved
 
         .set    i , i + 1
     .endr

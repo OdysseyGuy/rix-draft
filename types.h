@@ -1,5 +1,6 @@
-#ifndef _TYPES_H_
-#define _TYPES_H_
+#ifndef TYPES_H
+#define TYPES_H
+
 
 #include <stdint.h>
 
@@ -8,4 +9,4 @@ typedef uint64_t vaddr_t;
 typedef uint64_t addr_t;
 
 
-#endif /* _TYPES_H_ */
+#endif /* TYPES_H */

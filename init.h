@@ -20,13 +20,11 @@ typedef enum init_stage {
     INIT_STAGE_PERCPU,  /* Kernel percpu initialization. */
 } init_stage_t;
 
-
 /** 
  * @brief
  * Current kernel initialization stage.
  */
 extern init_stage_t stage;
-
 
 /**
  * @brief
@@ -36,9 +34,9 @@ extern init_stage_t stage;
 typedef struct init_stage_hook {
     init_stage_t    stage;
     uint32_t        priority;
-    void          (*hook)(const void *arg);
-    const void     *args;
-    const char     *name;
+    void            (*hook)(const void *arg);
+    const void      *args;
+    const char      *name;
 } init_stage_hook_t;
 
 
@@ -51,10 +49,9 @@ typedef struct init_stage_hook {
 #define __init_data __section(".init.data")
 #define __init_hook __section(".init.hook")
 
-
 /**
  * @brief
- * Registers a hook function at a specific initializaition stage.
+ * Registers a hook function at a specific initialization stage.
  * 
  * @param _name
  * Name of this hook.
@@ -87,15 +84,13 @@ typedef struct init_stage_hook {
  * @brief
  * Calls the initialization hooks upto the specified stage. 
  */
-void
-kernel_init_upto(_in_ init_stage_t upto_stage);
+void kernel_init_upto(_in_ init_stage_t upto_stage);
 
 /**
  * @brief
  * Initializes the kernel init stage hook system.
  */
-void
-init_hooks_init(void);
+void init_hooks_init(void);
 
 
 #endif /* INIT_H */

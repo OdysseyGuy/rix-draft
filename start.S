@@ -2,7 +2,7 @@
 
 #include <asm.h>
 #include <gdt.h>
-#include <mmu.h>
+#include <ptable.h>
 #include <x86.h>
 
 #define BOOT_PDE_PS_FLAGS   (X86_PAGE_BIT_G | X86_PAGE_BIT_PS | X86_PAGE_BIT_RW | X86_PAGE_BIT_P)
@@ -222,7 +222,6 @@ ELF_DATA(_gdtr)
 
     .align  8
 ELF_DATA(_gdt)
-
     # Null segment descriptor
     .quad   0x0000000000000000
 
@@ -241,7 +240,6 @@ ELF_DATA(_gdt)
     .byte   GDE_ACB_P | GDE_ACB_S | GDE_ACB_RW              # access byte [47:40]
     .byte   0x00                                            # flags [55:52] limit [51:48]
     .byte   0x00                                            # base3 [63:56]
-
 ELF_DATA(_gdt_end)
 
 

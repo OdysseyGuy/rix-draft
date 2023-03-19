@@ -9,9 +9,8 @@
  * @brief
  * Console ring buffer.
  */
-typedef struct con_ring_buf {
-    
-} con_ring_buf_t;
+typedef struct console_rb { 
+} console_rb_t;
 
 
 #endif /* CONRB_H */

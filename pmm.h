@@ -7,11 +7,11 @@
 #include <types.h>
 #include <stdlib.h>
 
-#define PAGE_SIZE               4096
-#define PAGE_SIZE_SHIFT         12
+#define PAGE_SIZE 4096
+#define PAGE_SIZE_SHIFT 12
 
-#define PAGE_ALIGN(addr)        ALIGN(addr, PAGE_SIZE)
-#define IS_PAGE_ALIGNED(addr)   IS_ALIGNED(addr, PAGE_SIZE)
+#define PAGE_ALIGN(addr) ALIGN(addr, PAGE_SIZE)
+#define IS_PAGE_ALIGNED(addr) IS_ALIGNED(addr, PAGE_SIZE)
 
 
 typedef struct mmu_initial_mapping {
@@ -23,15 +23,12 @@ typedef struct mmu_initial_mapping {
 
 extern mmu_initial_mapping_t mmu_initial_mappings[];
 
-
 typedef struct vm_page {
     list_node_t node;
     uint8_t     flags;
 } vm_page_t;
 
-
 #define VM_PAGE_FLAG_NONFREE (0x1)
-
 
 typedef enum pmm_status {
     PMM_NO_ERROR,
@@ -39,7 +36,6 @@ typedef enum pmm_status {
     PMM_ERR_CONTIGUOUS_PAGES_NOT_FOUND,
     PMM_ERR_INVALID_ARGS,
 } pmm_status_t;
-
 
 /**
  * @brief
@@ -62,9 +58,7 @@ typedef struct pmm_zone {
 } pmm_zone_t;
 
 
-pmm_status_t
-pmm_add_zone(_in_ pmm_zone_t *zone);
-
+pmm_status_t pmm_add_zone(_in_ pmm_zone_t *zone);
 
 /**
  * @brief
@@ -76,10 +70,7 @@ pmm_add_zone(_in_ pmm_zone_t *zone);
  * @param list
  * List of pages that were allocated.
  */
-pmm_status_t
-pmm_alloc_pages(
-    _in_ _out_ uint32_t *count,
-    _out_ list_t        *list);
+pmm_status_t pmm_alloc_pages(_in_ _out_ uint32_t *count, _out_ list_t *list);
 
 /**
  * @brief
@@ -88,8 +79,7 @@ pmm_alloc_pages(
  * @param page
  * Page allocated.
  */
-pmm_status_t
-pmm_alloc_page(_out_ vm_page_t **page);
+pmm_status_t pmm_alloc_page(_out_ vm_page_t **page);
 
 
 /**
@@ -108,11 +98,7 @@ pmm_alloc_page(_out_ vm_page_t **page);
  * @returns
  * Number of pages allocated.
  */
-size_t
-pmm_alloc_range(
-    _in_  paddr_t       paddr,
-    _in_  size_t        count,
-    _out_ list_t       *list);
+size_t pmm_alloc_range(_in_ paddr_t paddr, _in_ size_t count, _out_ list_t *list);
 
 /**
  * @brief
@@ -130,12 +116,8 @@ pmm_alloc_range(
  * If the optional list is passed, append the allocate
  * page structures to the tail of the list.
  */
-pmm_status_t
-pmm_alloc_contiguous(
-    _in_  size_t        count,
-    _in_  uint8_t       align_log2,
-    _out_ paddr_t      *pa,
-    _out_ list_t       *list);
+pmm_status_t pmm_alloc_contiguous(_in_ size_t count, _in_ uint8_t align_log2, _out_ paddr_t *pa,
+                                  _out_ list_t *list);
 
 
 /**
@@ -145,26 +127,18 @@ pmm_alloc_contiguous(
  * @returns
  * Count of pages freed.
  */
-size_t
-pmm_free_pages(_in_ list_t *pages);
+size_t pmm_free_pages(_in_ list_t *pages);
 
-size_t
-pmm_free_page(_in_ vm_page_t *page);
+size_t pmm_free_page(_in_ vm_page_t *page);
 
 
 /**
  * @brief
  * Allocate pages from the kernel virtual address space.
  */
-void *
-pmm_alloc_kpages(
-    _in_  size_t        count,
-    _out_ list_t       *list);
+void * pmm_alloc_kpages(_in_ size_t count, _out_ list_t *list);
 
-size_t
-pmm_free_kpages(
-    _in_ void          *ptr,
-    _in_ uint32_t       count);
+size_t pmm_free_kpages(_in_ void *ptr, _in_ uint32_t count);
 
 
 
@@ -172,23 +146,18 @@ pmm_free_kpages(
  * @brief
  * Physical address to virtual address.
  */
-void *
-paddr_to_kvaddr(_in_ paddr_t pa);
+void * paddr_to_kvaddr(_in_ paddr_t pa);
 
 
 /**
  * @brief
  * Virtual address to physical address.
  */
-paddr_t
-vaddr_to_paddr(_in_ void *vaddr);
+paddr_t vaddr_to_paddr(_in_ void *vaddr);
 
 
-paddr_t
-vm_page_to_paddr(_in_ vm_page_t *page);
-
-vm_page_t *
-paddr_to_vm_page(_in_ paddr_t addr);
+paddr_t vm_page_to_paddr(_in_ vm_page_t *page);
+vm_page_t * paddr_to_vm_page(_in_ paddr_t addr);
 
 
 typedef struct vmm_region {
@@ -212,11 +181,9 @@ typedef struct vm_aspace {
 } vm_aspace_t;
 
 
-void
-vmm_init_preheap(void);
+void vmm_init_preheap(void);
 
-vm_aspace_t *
-vaddr_to_vm_aspace(_in_ vaddr_t addr);
+vm_aspace_t * vaddr_to_vm_aspace(_in_ vaddr_t addr);
 
 
 /**
@@ -233,15 +200,11 @@ vaddr_to_vm_aspace(_in_ vaddr_t addr);
  * 
  * @param paddr 
  * @param ptr 
+ *
  * @return pmm_status_t 
  */
-pmm_status_t
-vmm_alloc_physical(
-    _in_ vm_aspace_t   *aspace,
-    _in_ const uint8_t *name,
-    _in_ size_t         count,
-    _in_ paddr_t        paddr,
-    _in_ _out_ void   **ptr);
+pmm_status_t vmm_alloc_physical(_in_ vm_aspace_t *aspace, _in_ const uint8_t *name,
+                                _in_ size_t count, _in_ paddr_t paddr, _in_ _out_ void **ptr);
 
 
 #endif /* PMM_H */

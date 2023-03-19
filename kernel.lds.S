@@ -52,6 +52,7 @@ SECTIONS {
     .init.data : AT(ADDR(.init.data) - KERNEL_OFFSET) {
         *(.init.data .init.data.*)
 
+	/* All iniitialization function pointers go here */
         __init_hooks_start = .;
         *(.init.hook)
         __init_hooks_end = .;
@@ -61,7 +62,6 @@ SECTIONS {
     .init.end : AT(ADDR(.init.end) - KERNEL_OFFSET) {
         __init_end = .;
     }
-
 
     /* BSS */
     . = ALIGN(4096);

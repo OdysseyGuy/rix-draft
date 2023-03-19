@@ -10,8 +10,7 @@
 #define KLOG_LEVEL_INFO     4
 #define KLOG_LEVEL_DEBUG    5
 
-
-#define kprintf(level, fmt, ...)
+#define kprintf(level, fmt)
 
 
 #endif /* KPRINTF_H */

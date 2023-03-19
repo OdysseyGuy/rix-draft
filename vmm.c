@@ -2,14 +2,6 @@
 
 static list_node_t aspace_list = LIST_INITIAL_VALUE(aspace_list);
 
-#ifndef KERNEL_ASPACE_BASE
-#   define KERNEL_ASPACE_BASE 0x0
-#endif
-
-#ifndef KERNEL_ASPACE_SIZE
-#   define KERNEL_ASPACE_SIZE 0x0
-#endif
-
 /* The kernel address space. */
 vm_aspace_t kernel_aspace = {
     .base = KERNEL_ASPACE_BASE,
@@ -17,8 +9,7 @@ vm_aspace_t kernel_aspace = {
     .name = "kernel"
 };
 
-void
-vmm_init_preheap(void)
+void vmm_init_preheap(void)
 {
     list_init(&kernel_aspace.region_list);
 

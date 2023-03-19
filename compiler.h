@@ -16,7 +16,6 @@
 
 
 #define unreachable_barrier() asm volatile("")
-
 #define unreachable()               \
     do {                            \
         unreachable_barrier();      \
@@ -43,12 +42,10 @@
 #define __constructor       __attribute__((constructor))
 #define __destructor        __attribute__((destructor))
 
-
 #define __pure              __attribute__ ((pure))
 #define __hot               __attribute__ ((hot))
 #define __cold              __attribute__ ((cold))
 #define __const             __attribute__ ((const))
-
 
 #define __visibility(x)     __attribute__ ((visibility (x)))
 #define __aligned(x)        __attribute__ ((aligned(x)))
@@ -57,7 +54,6 @@
 #define __nonnull(...)      __attribute__ ((nonnull (__VA_ARGS__)))
 
 #define __printf(fmt, va)   __attribute__((__format__(__printf__, fmt, va)))
-
 
 #define _in_
 #define _out_

@@ -2,12 +2,10 @@
 
 #include <apic.h>
 
-void
-apic_create_mapping(void) {
-    
+void apic_create_mapping(void)
+{
 }
 
-void
-lapic_init(void) {
-
+void lapic_init(void)
+{
 }

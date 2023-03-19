@@ -21,19 +21,19 @@ typedef enum processor_state {
 
 
 struct processor_set {
-    list_node_t         pset_list_node; /* List of processor sets. */
-    list_t              processor_list; /* List of processors belonging
-                                         * to this processor set.
-                                         */
-    uint32_t            processor_count;/* Count of processor in this set. */
+    list_node_t pset_list_node; /* List of processor sets. */
+    list_t      processor_list; /* List of processors belonging
+                                 * to this processor set.
+                                 */
+    uint32_t    processor_count;/* Count of processor in this set. */
     
-    list_t              threads;
-    uint32_t            thread_count;   /* Total threads assigned to this
-                                         * processor set.
-                                         */
+    list_t      threads;
+    uint32_t    thread_count;   /* Total threads assigned to this
+                                 * processor set.
+                                 */
 
-    list_t              tasks;          /* Tasks assigned. */
-    uint32_t            task_count;     /* Count of task assigned. */
+    list_t      tasks;          /* Tasks assigned. */
+    uint32_t    task_count;     /* Count of task assigned. */
 };
 
 
@@ -60,9 +60,7 @@ typedef struct processor {
 
 extern list_t processor_list;
 
-void
-pset_init(_in_ processor_set_t *pset);
-
+void pset_init(_in_ processor_set_t *pset);
 
 /**
  * @brief
@@ -78,15 +76,9 @@ pset_init(_in_ processor_set_t *pset);
  * @param pset
  * Processor set to add this processor to.
  */
-void
-pset_add_processor(
-    _in_ processor_t       *processor,
-    _in_ processor_set_t   *pset);
+void pset_add_processor(_in_ processor_t *processor, _in_ processor_set_t *pset);
 
-void
-pset_remove_processor(
-    _in_ processor_t       *processor,
-    _in_ processor_set_t   *pset);
+void pset_remove_processor(_in_ processor_t *processor, _in_ processor_set_t *pset);
 
 
 /**
@@ -99,10 +91,7 @@ pset_remove_processor(
  * @param thread
  * Thread to assign.
  */
-void
-pset_add_thread(
-    _in_ processor_set_t   *pset,
-    _in_ thread_t          *thread);
+void pset_add_thread(_in_ processor_set_t *pset, _in_ thread_t *thread);
 
 /**
  * @brief
@@ -114,10 +103,7 @@ pset_add_thread(
  * @param thread
  * Thread to remove.
  */
-void
-pset_remove_thread(
-    _in_ processor_set_t   *pset,
-    _in_ thread_t          *thread);
+void pset_remove_thread(_in_ processor_set_t *pset, _in_ thread_t *thread);
 
 
 /**
@@ -125,8 +111,7 @@ pset_remove_thread(
  * Initialize the processor set system and the bootstrap
  * processor.
  */
-void
-processor_bootstrap(void);
+void processor_bootstrap(void);
 
 /**
  * @brief
@@ -142,11 +127,8 @@ processor_bootstrap(void);
  * @param processor_set
  * Processor-set that includes this processor.
  */
-void
-processor_init(
-    _in_ processor_t       *processor,
-    _in_ uint32_t           num,
-    _in_ processor_set_t   *processor_set);
+void processor_init(_in_ processor_t *processor, _in_ uint32_t num,
+                    _in_ processor_set_t *processor_set);
 
 
 #endif /* PROCESSOR_H */

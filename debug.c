@@ -2,6 +2,7 @@
 
 #include <x86.h>
 
-void platform_init_debug(void) {
+void platform_init_debug(void)
+{
     /* Disable all interrrupts */
 }

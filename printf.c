@@ -5,11 +5,11 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#define INT32_MAX     0x7fffffff
-#define UINT32_MAX    0xffffffff
+#define INT32_MAX   0x7fffffff
+#define UINT32_MAX  0xffffffff
 
-#define isdigit(c)  (((c) >= '0') && ((c) <= '9'))
-#define chtod(c)    ((c) - '0')
+#define isdigit(c) (((c) >= '0') && ((c) <= '9'))
+#define chtod(c) ((c) - '0')
 
 #define CAPS    0x1
 #define LEFT    0x2
@@ -30,8 +30,7 @@ enum number_type {
     FORMAT_TYPE_SIZE_T,
 };
 
-int
-__printf_internal(
+int __printf_internal(
     const uint8_t  *fmt,
     va_list         argp,
     void          (*putc)(uint8_t c, void *arg),
@@ -68,7 +67,6 @@ __printf_internal(
             bool found = true;
 
             ++fmt;
-
             switch (*fmt) {
             case '-': flags |= LEFT;    break;
             case '+': flags |= PLUS;    break;
@@ -180,23 +178,23 @@ __printf_internal(
             }
 
             n = 0;
-
             while ((n < precision) && (!((width > 0) && (n >= width)))) {
                 if (*s == '\0') {
-					break;
-				}
-				(*putc)(*s++, arg);
+                    break;
+                }
+
+                (*putc)(*s++, arg);
                 n++;
                 printed++;
             }
 
             if (n < width && ladjust) {
-				while (n < width) {
-					(*putc)(' ', arg);
-					n++;
+                while (n < width) {
+                    (*putc)(' ', arg);
+                    n++;
                     printed++;
-				}
-			}
+                }
+            }
         }
 
         case 'o':
@@ -255,7 +253,6 @@ print_signed:
                 break;
             }
 
-
 print_unsigned:
             if (ntype == FORMAT_TYPE_LONG_LONG) {
                 n = va_arg(argp, unsigned long long);
@@ -286,8 +283,7 @@ print_unsigned:
 }
 
 
-int
-printf(const uint8_t *fmt, ...)
+int printf(const uint8_t *fmt, ...)
 {
     va_list ap;
     int i;
@@ -305,9 +301,7 @@ typedef struct snprintf_arg {
     size_t      pos;
 } snprintf_arg_t;
 
-
-static void
-vsnprintf_internal(uint8_t c, void *arg)
+static void vsnprintf_internal(uint8_t c, void *arg)
 {
     snprintf_arg_t *const args = arg;
 
@@ -316,8 +310,7 @@ vsnprintf_internal(uint8_t c, void *arg)
     }
 }
 
-int
-vsnprintf(uint8_t *str, size_t size, const uint8_t *fmt, va_list argp)
+int vsnprintf(uint8_t *str, size_t size, const uint8_t *fmt, va_list argp)
 {
     int ret;
     snprintf_arg_t info;
@@ -335,20 +328,17 @@ vsnprintf(uint8_t *str, size_t size, const uint8_t *fmt, va_list argp)
     return ret;
 }
 
-int
-vprintf(const uint8_t *fmt, va_list args)
+int vprintf(const uint8_t *fmt, va_list args)
 {
     /* return vsnprintf(, INT_MAX, fmt, args); */
 }
 
-int
-vsprintf(uint8_t *str, const uint8_t *fmt, va_list args)
+int vsprintf(uint8_t *str, const uint8_t *fmt, va_list args)
 {
     return vsnprintf(str, INT32_MAX, fmt, args);
 }
 
-int
-sprintf(uint8_t *str, const uint8_t *fmt, ...)
+int sprintf(uint8_t *str, const uint8_t *fmt, ...)
 {
     va_list ap;
     int i;
@@ -360,8 +350,7 @@ sprintf(uint8_t *str, const uint8_t *fmt, ...)
     return i;
 }
 
-int
-snprintf(uint8_t *str, size_t size, const uint8_t *fmt, ...)
+int snprintf(uint8_t *str, size_t size, const uint8_t *fmt, ...)
 {
     va_list ap;
     int i;

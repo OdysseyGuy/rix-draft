@@ -2,36 +2,33 @@
 
 #include <types.h>
 #include <x86.h>
+#include <platform.h>
 
-#define INT_DIV_BY_ZERO     0x0
-#define INT_PAGE_FAULT      0xE
+#define INT_DIV_BY_ZERO 0x0
+#define INT_PAGE_FAULT  0xE
 
-extern void
-platform_int_handler(interrupt_frame_t* frame);
-
-void
-handle_div_by_zero_exception(void) {}
-
-void
-handle_page_fault_exception(interrupt_frame_t *frame)
+void x86_div_by_zero_exception_handler(void)
 {
-    vaddr_t fault_vaddr = get_cr2();
 }
 
-void
-int_handler(interrupt_frame_t *frame)
+void x86_page_fault_exception_handler(x86_interrupt_frame_t *frame)
+{
+    vaddr_t fault_vaddr = x86_get_cr2();
+}
+
+void x86_int_handler(x86_interrupt_frame_t *frame)
 {
     uint32_t vector = frame->vector;
 
     switch (vector) {
     case INT_DIV_BY_ZERO:
-        handle_div_by_zero_exception();
+        x86_div_by_zero_exception_handler();
         break;
-    
+
     case INT_PAGE_FAULT:
-        handle_page_fault_exception(frame);
+        x86_page_fault_exception_handler(frame);
         break;
-    
+
     default:
         break;
 

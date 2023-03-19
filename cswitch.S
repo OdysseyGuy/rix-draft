@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 #include <asm.h>
 
 ELF_FUNCTION(cswitch)

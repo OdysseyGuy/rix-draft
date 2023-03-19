@@ -5,13 +5,32 @@
 #include <pmm.h>
 #include <string.h>
 
-
 uint8_t paddr_width = 32;
 uint8_t vaddr_width = 48;
 
+static uint32_t x86_cpuid_get_addr_width(void)
+{
+    uint32_t eax, ebx, ecx, edx;
+    x86_cpuid(0x80000008, &eax, &ebx, &ecx, &edx);
+    return eax;
+}
 
-bool
-mmu_check_vaddr(vaddr_t vaddr)
+static bool x86_check_smep_availability(void)
+{
+    uint32_t eax, ebx, ecx, edx; 
+    x86_cpuid(0x7, &eax, &ebx, &ecx, &edx);
+    return ((ebx >> 6) & 0x1);
+}
+
+static bool x86_check_smap_availability(void)
+{
+    uint32_t eax, ebx, ecx, edx; 
+    x86_cpuid(0x7, &eax, &ebx, &ecx, &edx);
+    
+    return ((ebx >> 19) & 0x1);
+}
+
+bool mmu_check_vaddr(vaddr_t vaddr)
 {
     /* check if vaddr is page aligned */
     if (!IS_PAGE_ALIGNED(vaddr)) {
@@ -26,9 +45,7 @@ mmu_check_vaddr(vaddr_t vaddr)
     return (vaddr > lohalf_max || vaddr < hihalf_min);
 }
 
-
-bool
-mmu_check_paddr(paddr_t paddr)
+bool mmu_check_paddr(paddr_t paddr)
 {
     /* check if paddr is page aligned */
     if (!IS_PAGE_ALIGNED(paddr)) {
@@ -39,28 +56,21 @@ mmu_check_paddr(paddr_t paddr)
 }
 
 
-static uint64_t
-get_pfn_from_pde(uint64_t pde)
+static uint64_t get_pfn_from_pde(uint64_t pde)
 {
     uint64_t pfn;
     pfn = (pde & X86_2MB_PAGE_FRAME);
     return pfn;
 }
 
-
-static uint64_t
-get_pfn_from_pte(uint64_t pte)
+static uint64_t get_pfn_from_pte(uint64_t pte)
 {
     uint64_t pfn;
     pfn = (pte & X86_4KB_PAGE_FRAME);
     return pfn;
 }
 
-
-static uint64_t
-get_pml4e_from_pml4t(
-    vaddr_t vaddr,
-    addr_t  pml4)
+static uint64_t get_pml4e_from_pml4t(vaddr_t vaddr, addr_t pml4)
 {
     uint64_t *pml4t = (uint64_t*)pml4;
     uint32_t pml4e_idx = VADDR_TO_PML4_INDEX(vaddr);
@@ -68,11 +78,7 @@ get_pml4e_from_pml4t(
     return X86_P2KV(pml4t[pml4e_idx]);
 }
 
-
-static uint64_t
-get_pdpe_from_pdpt(
-    vaddr_t vaddr,
-    addr_t  pm4e)
+static uint64_t get_pdpe_from_pdpt(vaddr_t vaddr, addr_t pm4e)
 {
     uint64_t *pdpt = (uint64_t*)pm4e;
     uint32_t pdpe_idx = VADDR_TO_PDP_INDEX(vaddr);
@@ -80,11 +86,7 @@ get_pdpe_from_pdpt(
     return X86_P2KV(pdpt[pdpe_idx]);
 }
 
-
-static uint64_t
-get_pde_from_pdt(
-    vaddr_t vaddr,
-    addr_t  pdpe)
+static uint64_t get_pde_from_pdt(vaddr_t vaddr, addr_t pdpe)
 {
     uint64_t *pdt = (uint64_t*)pdpe;
     uint32_t pde_idx = VADDR_TO_PD_INDEX(vaddr);
@@ -93,10 +95,7 @@ get_pde_from_pdt(
 }
 
 
-static uint64_t
-get_pte_from_pt(
-    vaddr_t vaddr,
-    addr_t  pde)
+static uint64_t get_pte_from_pt(vaddr_t vaddr, addr_t pde)
 {
     uint64_t *pt = (uint64_t*)pde;
     uint32_t pte_idx = VADDR_TO_PT_INDEX(vaddr);
@@ -107,8 +106,8 @@ get_pte_from_pt(
 
 #if 0
 
-static void
-update_pte(vaddr_t vaddr, uint64_t pde, paddr_t paddr, uint64_t flags) {
+static void update_pte(vaddr_t vaddr, uint64_t pde, paddr_t paddr, uint64_t flags)
+{
     uint64_t *pt_table_ptr = (uint64_t *)(pde & X86_4KB_PAGE_FRAME);
     uint32_t pt_index = (((uint64_t)vaddr >> PT_SHIFT) & ((1UL << ADDR_OFFSET) - 1));
     
@@ -122,8 +121,8 @@ update_pte(vaddr_t vaddr, uint64_t pde, paddr_t paddr, uint64_t flags) {
 }
 
 
-static void
-update_pde(vaddr_t vaddr, uint64_t pdpe, uint64_t entry, uint64_t flags) {
+static void update_pde(vaddr_t vaddr, uint64_t pdpe, uint64_t entry, uint64_t flags)
+{
     uint64_t *pd_table_ptr = (uint64_t *)(pdpe & X86_4KB_PAGE_FRAME);
     uint32_t pd_index = (((uint64_t)vaddr >> PD_SHIFT) & ((1UL << ADDR_OFFSET) - 1));
     
@@ -138,7 +137,8 @@ update_pde(vaddr_t vaddr, uint64_t pdpe, uint64_t entry, uint64_t flags) {
 
 
 static void
-update_pdpe(vaddr_t vaddr, uint64_t pml4e, uint64_t entry, uint64_t flags) {
+update_pdpe(vaddr_t vaddr, uint64_t pml4e, uint64_t entry, uint64_t flags)
+{
     uint64_t *pdp_table_ptr = (uint64_t *)(pml4e & X86_4KB_PAGE_FRAME);
     uint32_t pdp_index = (((uint64_t)vaddr >> PDP_SHIFT) & ((1UL << ADDR_OFFSET) - 1));
     
@@ -153,7 +153,8 @@ update_pdpe(vaddr_t vaddr, uint64_t pml4e, uint64_t entry, uint64_t flags) {
 
 
 static void
-update_pml4e(vaddr_t vaddr, uint64_t pml4_addr, uint64_t entry, uint64_t flags) {
+update_pml4e(vaddr_t vaddr, uint64_t pml4_addr, uint64_t entry, uint64_t flags)
+{
     uint64_t *pml4_table_ptr = (uint64_t *)(pml4_addr);
     uint32_t pml4_index = (((uint64_t)vaddr >> PML4_SHIFT) & ((1UL << ADDR_OFFSET) - 1));
     
@@ -169,13 +170,15 @@ update_pml4e(vaddr_t vaddr, uint64_t pml4_addr, uint64_t entry, uint64_t flags) 
 
 
 /**
- * @brief   Convenience function to allocate a page for a page size table structure
- *          in the kernel address space.
+ * @brief
+ * Convenience function to allocate a page for a page size table structure
+ * in the kernel address space.
  * 
- * @return  Page allocated.
+ * @return
+ * Page allocated.
  */
-static uint64_t *
-__kpage_alloc(void) {
+static uint64_t * __kpage_alloc(void)
+{
     void *page_ptr = pmm_alloc_kpages(1, NULL);
 
     if (page_ptr) {
@@ -188,13 +191,8 @@ __kpage_alloc(void) {
 #endif
 
 
-mmu_status_t
-mmu_get_mapping(
-    vaddr_t     vaddr,
-    addr_t      pml4,
-    uint64_t   *last_valid_entry,
-    uint64_t   *out_flags,
-    uint32_t   *out_lvl)
+mmu_status_t mmu_get_mapping(vaddr_t vaddr, addr_t pml4, uint64_t *last_valid_entry,
+                             uint64_t *out_flags, uint32_t *out_lvl)
 {
     uint64_t pml4e, pdpe, pde, pte;
     pml4e = get_pml4e_from_pml4t(vaddr, pml4);
@@ -254,8 +252,8 @@ done:
 
 #if 0
 
-mmu_status_t
-mmu_map_addr(vaddr_t vaddr, paddr_t paddr, addr_t pml4, uint64_t mmu_flags) {
+mmu_status_t mmu_map_addr(vaddr_t vaddr, paddr_t paddr, addr_t pml4, uint64_t mmu_flags)
+{
     if (!mmu_check_vaddr(vaddr) && !mmu_check_paddr(paddr)) {
         return MMU_ERR_INVALID_ARGS;
     }
@@ -373,16 +371,12 @@ done:
  * Queries the MMU for the physical address mapped to the virtual
  * address. 
  */
-mmu_status_t
-mmu_query(
-    _in_  vaddr_t   vaddr,
-    _out_ paddr_t  *paddr,
-    _out_ uint32_t *flags)
+mmu_status_t mmu_query(_in_ vaddr_t vaddr, _out_ paddr_t *paddr, _out_ uint32_t *flags)
 {
     uint64_t cr3, ret_entry, ret_flags;
     uint32_t ret_lvl;
 
-    cr3 = get_cr3();
+    cr3 = x86_get_cr3();
 
     pmm_status_t status = mmu_get_mapping(vaddr, X86_P2KV(cr3), &ret_entry, &ret_flags, &ret_lvl);
 
@@ -400,31 +394,29 @@ mmu_query(
 }
 
 
-void
-mmu_init(void)
+void mmu_init(void)
 {
     volatile uint64_t efer_msr, cr0, cr4;
 
-    cr0 = get_cr0();
+    cr0 = x86_get_cr0();
     cr0 |= X86_CR0_WP_BIT;
-    set_cr0(cr0);
+    x86_set_cr0(cr0);
 
-    cr4 = get_cr4();
-    if (check_smap_availability()) {
+    cr4 = x86_get_cr4();
+    if (x86_check_smap_availability()) {
         cr4 |= X86_CR4_SMAP_BIT;
     }
-    if (check_smep_availability()) {
+    if (x86_check_smep_availability()) {
         cr4 |= X86_CR4_SMEP_BIT;
     }
-    set_cr4(cr4);
+    x86_set_cr4(cr4);
 
-    /* enable no-execution in efer */
-    efer_msr = read_msr(X86_IA32_MSR_EFER);
+    efer_msr = x86_read_msr(X86_IA32_MSR_EFER);
     efer_msr |= X86_IA32_MSR_EFER_NXE;
-    write_msr(X86_IA32_MSR_EFER, efer_msr);
+    x86_write_msr(X86_IA32_MSR_EFER, efer_msr);
 
     /* query virtual and physical address sizes */
-    uint32_t addr_width = cpuid_get_addr_width();
+    uint32_t addr_width = x86_cpuid_get_addr_width();
     paddr_width = (uint8_t)(addr_width & 0xff);
     vaddr_width = (uint8_t)((addr_width >> 8) & 0xff);
 }

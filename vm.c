@@ -7,19 +7,10 @@
 extern int __code_start;
 extern int __end;
 
+extern void vmm_init_preheap(void);
+extern mmu_status_t mmu_query(vaddr_t vaddr, paddr_t *paddr, uint32_t *flags);
 
-extern void
-vmm_init_preheap(void);
-
-
-extern mmu_status_t
-mmu_query(vaddr_t vaddr, paddr_t *paddr, uint32_t *flags);
-
-
-static void
-mark_pages_in_use(
-    vaddr_t va,
-    size_t  len)
+static void mark_pages_in_use(vaddr_t va, size_t  len)
 {
     va = ROUND_DOWN(va, PAGE_SIZE);
     len = PAGE_ALIGN(len + (va & (PAGE_SIZE - 1)));
@@ -38,9 +29,7 @@ mark_pages_in_use(
     }
 }
 
-
-void
-vm_init_preheap(void)
+void vm_init_preheap(void)
 {
     vmm_init_preheap();
 
