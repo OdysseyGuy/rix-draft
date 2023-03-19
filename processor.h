@@ -45,14 +45,14 @@ typedef struct processor {
 
     processor_state_t   state;          /* Current processor state. */
 
-    thread_t           *current_thread; /* Thread currently running
+    thread_t            *current_thread;/* Thread currently running
                                          * on this processor.
                                          */
     thread_t            idle_thread;
 
     uint32_t            cpu_number;
 
-    processor_set_t    *pset;           /* Processor set this processor
+    processor_set_t     *pset;          /* Processor set this processor
                                          * belongs to.
                                          */
 } processor_t;
