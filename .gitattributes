@@ -1,2 +1,5 @@
 # set all line endings to lf
 * text=auto
+
+*.c text
+*.h text
