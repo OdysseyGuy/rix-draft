@@ -26,7 +26,7 @@
 #define vecswap(a, b, n) if (n > 0) swapfunc(a, b, n, swaptype)
 
 
-static void swapfunc(_in_ uint8_t *a, _in_ uint8_t *b, _in_ size_t n, _in_ int swaptype)
+static void swapfunc( uint8_t *a,  uint8_t *b,  size_t n,  int swaptype)
 {
     if (swaptype <= 1) {
         size_t t;
@@ -41,8 +41,8 @@ static void swapfunc(_in_ uint8_t *a, _in_ uint8_t *b, _in_ size_t n, _in_ int s
     }
 }
 
-static uint8_t * med3(_in_ uint8_t *a, _in_ uint8_t *b, _in_ uint8_t *c,
-                      _in_ int (*cmp)(const void *, const void *))
+static uint8_t * med3( uint8_t *a,  uint8_t *b,  uint8_t *c,
+                       int (*cmp)(const void *, const void *))
 {
     return cmp(a, b) < 0 ?
             (cmp(b, c) < 0 ? b : cmp(a, c) < 0 ? c : a)
@@ -50,7 +50,6 @@ static uint8_t * med3(_in_ uint8_t *a, _in_ uint8_t *b, _in_ uint8_t *c,
 }
 
 /**
- * @brief
  * Quick sort.
  * 
  * @param[in] arr
@@ -65,8 +64,8 @@ static uint8_t * med3(_in_ uint8_t *a, _in_ uint8_t *b, _in_ uint8_t *c,
  * @param[in] cmp
  * Compare function for sorting.
  */
-void qsort(_in_ void *arr, _in_ size_t n, _in_ size_t es,
-           _in_ int (*cmp)(const void *, const void *))
+void qsort(void *arr, size_t n,  size_t es,
+            int (*cmp)(const void *, const void *))
 {
     uint8_t *pa, *pb, *pc, *pd, *pl, *pm, *pn, *pv;
     int r, swaptype;

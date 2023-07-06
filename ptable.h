@@ -1,6 +1,6 @@
-#ifndef PTABLE_H
-#define PTABLE_H
+/* SPDX-License-Identifier: MIT */
 
+#pragma once
 
 #define NUM_PT_ENTRIES              512
 #define PAGE_SIZE                   4096
@@ -39,6 +39,3 @@
 #define VADDR_TO_PDP_INDEX(vaddr)   ((vaddr) >> X86_PDP_SHIFT) & (0x1FF)
 #define VADDR_TO_PD_INDEX(vaddr)    ((vaddr) >> X86_PD_SHIFT) & (0x1FF)
 #define VADDR_TO_PT_INDEX(vaddr)    ((vaddr) >> X86_PT_SHIFT) & (0x1FF)
-
-
-#endif /* PTABLE_H */

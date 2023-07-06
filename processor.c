@@ -29,7 +29,7 @@ void processor_bootstrap(void)
     processor_init(&bsp, 0, &default_pset);
 }
 
-void pset_init(_in_ processor_set_t *pset)
+void pset_init(processor_set_t *pset)
 {
     list_init(&pset->processor_list);
     pset->processor_count = 0;
@@ -40,7 +40,6 @@ void pset_init(_in_ processor_set_t *pset)
 }
 
 /**
- * @details
  * Processor initialization routine. Called once per processor.
  * Assigns the processor to the processor set.
  * Sets the processor in the idle state.

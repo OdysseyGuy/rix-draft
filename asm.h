@@ -1,10 +1,9 @@
 /* SPDX-License-Identifier: MIT */
 
-#ifndef _ASM_H_
-#define _ASM_H_
+#pragma once
 
 #ifndef __ASSEMBLY__
-    #error Must be included in assembly source only
+#error Must be included in assembly source only
 #endif
 
 #define ELF_FUNCTION(x)     \
@@ -19,5 +18,3 @@
     .global x;              \
     .type x, STT_OBJECT;    \
     x:
-
-#endif /* !_ASM_H_ */

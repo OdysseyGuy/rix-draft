@@ -15,7 +15,6 @@
 #define PIC_EOI         0x20        /* PIC End-of-Interrupt command code */
 
 /**
- * @brief
  * Remaps the PIC controllers, giving them the specified vector
  * offsets, overriding the default configurations.
  */

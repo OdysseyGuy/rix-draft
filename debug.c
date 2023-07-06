@@ -4,5 +4,5 @@
 
 void platform_init_debug(void)
 {
-    /* Disable all interrrupts */
+    /* disable all interrrupts */
 }

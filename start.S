@@ -11,7 +11,6 @@
 # Physical Address
 #define pa(x) (x - KERNEL_VMA_BASE)
 
-
     # Multiboot2 header section
     .section .multiboot
     .align  8
@@ -156,7 +155,6 @@ ELF_FUNCTION(_start)
 
     loop    .Lfill_boot_pdp_high_table
 
-
     # Set paging bit in cr0 and now we are in 32-bit compatibility mode.
     mov     %cr0                    , %eax
     or      $X86_CR0_PG_BIT         , %eax
@@ -167,7 +165,6 @@ ELF_FUNCTION(_start)
     pushl   $pa(_start64)
     
     retf
-
 ELF_END_FUNCTION(_start)
 
 
@@ -176,7 +173,6 @@ ELF_END_FUNCTION(_start)
     .align  8
     .code64
 ELF_FUNCTION(_start64)
-
     movabs  $high_addr          , %rax
     jmpq    *%rax
 
@@ -199,12 +195,10 @@ high_addr:
 
     # Jump to main C routine
     callq   kmain
-
 0:
     hlt
     pause
     jmp     0b
-
 ELF_END_FUNCTION(_start64)
 
 

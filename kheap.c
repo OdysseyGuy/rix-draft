@@ -42,7 +42,7 @@ void kheap_free(void *ptr)
 {
 }
 
-static free_heap_chunk_t * heap_insert_free_chunk(_in_ free_heap_chunk_t *chunk)
+static free_heap_chunk_t * heap_insert_free_chunk(free_heap_chunk_t *chunk)
 {
     vaddr_t chunk_end = (vaddr_t)chunk + chunk->len;
 
@@ -58,10 +58,10 @@ static free_heap_chunk_t * heap_insert_free_chunk(_in_ free_heap_chunk_t *chunk)
 
     list_add(&heap_.free_list, &chunk->node);
 
-try_merge:
+try_merge:;
 }
 
-static free_heap_chunk_t * heap_create_free_chunk(_in_ void *ptr, _in_ size_t len)
+static free_heap_chunk_t * heap_create_free_chunk(void *ptr, size_t len)
 {
     free_heap_chunk_t *chunk = (free_heap_chunk_t *)ptr;
     chunk->len = len;

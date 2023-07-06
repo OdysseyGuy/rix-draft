@@ -43,7 +43,6 @@ typedef struct boot_state {
 } boot_state_t;
 
 boot_state_t bst;
-
 static pmm_zone_t phy_zones[10];
 
 void __init_func init_boot_state(void)
@@ -55,7 +54,7 @@ void __init_func init_boot_state(void)
 
     while (tag < end_tag && tag->type != MULTIBOOT2_TAG_TYPE_END) {
         switch (tag->type) {
-        case MULTIBOOT2_TAG_TYPE_MMAP:
+        case MULTIBOOT2_TAG_TYPE_MMAP: ;
             multiboot2_mmap_entry_t *s = ((multiboot2_tag_mmap_t *)tag)->entries;
             multiboot2_mmap_entry_t *e = (multiboot2_mmap_entry_t *)((uintptr_t)tag + tag->size);
 
@@ -94,14 +93,10 @@ static void pmm_zone_init(void)
 }
 
 void platform_init(void)
-{
-    /* setup serial debugging */
-    platform_init_debug();
-
-    /* setup the text console */
-    platform_init_console();
-
+{ 
+    platform_init_debug(); /* setup serial debugging */
+    platform_init_console(); /* setup the text console */
+    
     init_boot_state();
-
     pmm_zone_init();
 }

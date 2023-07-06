@@ -1,5 +1,4 @@
-#ifndef SPINLOCK_H
-#define SPINLOCK_H
+#pragma once
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -25,5 +24,3 @@ static inline bool spin_lock_unlock(spin_lock_t *lock)
 {
     *lock = 0;
 }
-
-#endif /* SPINLOCK_H */

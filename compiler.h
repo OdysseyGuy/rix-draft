@@ -1,12 +1,10 @@
 /* SPDX-License-Identifier: MIT */
 
-#ifndef COMPILER_H
-#define COMPILER_H
+#pragma once
 
 #ifndef __ASSEMBLY__
 
 #if __GNUC__ || __clang__
-
 
 #define likely(x)           __builtin_expect (!!(x), 1)
 #define unlikely(x)         __builtin_expect (!!(x), 0)
@@ -62,5 +60,3 @@
 #endif /* __GNUC__ || __clang__ */
 
 #endif /* !__ASSEMBLY__ */
-
-#endif /* !COMPILER_H */

@@ -3,7 +3,6 @@
 #include <asm.h>
 #include <gdt.h>
 
-
 #define NUM_ISR 256
 
     # Interrupt service routine stub

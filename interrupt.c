@@ -7,13 +7,11 @@
 #define NUM_ISR 256
 
 /**
- * @brief
  * An interrupt service routine.
  */
 typedef void (*isr_ptr_t)(void *arg);
 
 /**
- * @brief
  * Represents a single entry in the interrupt handler table.
  */
 typedef struct int_table_entry {
@@ -22,11 +20,10 @@ typedef struct int_table_entry {
     uint32_t    allocated : 1,  /* Whether or not this ISR was
                                  * allocated.
                                  */
-                edge : 1;       /* Edge(1)/Level(0) triggered. */
+    edge : 1;                   /* Edge(1)/Level(0) triggered. */
 } int_table_entry_t;
 
 /**
- * @brief
  * Interrupt handler table.
  */
 static int_table_entry_t int_table[NUM_ISR];
@@ -39,7 +36,6 @@ void platform_init_interrupts(void)
 void platform_int_handler(x86_interrupt_frame_t* frame)
 {
     uint32_t vector = frame->vector;
-
     int_table_entry_t* handler = &int_table[vector];
 
     /* edge triggered interrupt */

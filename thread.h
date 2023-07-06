@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 
-#ifndef THREAD_H
-#define THREAD_H
+#pragma once
 
 #include <stdint.h>
 #include <list.h>
@@ -46,16 +45,14 @@ void thread_init_early(void);
 void thread_init(void);
 
 /**
- * @brief
  * Put the thread to sleep.
  * 
  * @param ms
  * Time (in milliseconds) util the thread sleeps.
  */
-void thread_sleep(_in_ uint64_t ms);
+void thread_sleep(uint64_t ms);
 
 /**
- * @brief
  * Creates a new thread.
  * 
  * @param name
@@ -79,11 +76,10 @@ void thread_sleep(_in_ uint64_t ms);
  * @return
  * Pointer to the thread object or NULL on failure.
  */
-thread_t * thread_create(_in_ uint8_t *name, _in_ thread_func_t func, _in_ void *arg,
-                         _in_ int priority, _in_ void *stack, _in_ size_t stack_size);
+thread_t * thread_create(uint8_t *name, thread_func_t func, void *arg,
+                         int priority, void *stack, size_t stack_size);
 
 /**
- * @brief
  * Sends the caller thread the waiting state and remains
  * waiting until the specified thread terminates.
  * 
@@ -96,19 +92,16 @@ thread_t * thread_create(_in_ uint8_t *name, _in_ thread_func_t func, _in_ void 
  * @param timeout
  * Time to wait for the specified thread to finish.
  */
-void thread_join(_in_ thread_t *t, _in_ uint64_t timeout);
+void thread_join(thread_t *t, uint64_t timeout);
 
 /**
- * @brief
  * Terminates the current thread and returns the specified
  * return code.
  * 
  * @param ret
  * Return code.
  */
-void thread_exit(_in_ int ret) __noreturn;
+void thread_exit(int ret) __noreturn;
 
 /* Create initial thread responsible for booting up the system. */
-void create_bootstrap_thread(_in_ thread_t *t);
-
-#endif /* THREAD_H */
+void create_bootstrap_thread(thread_t *t);

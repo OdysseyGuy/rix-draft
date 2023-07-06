@@ -37,9 +37,8 @@ bool mmu_check_vaddr(vaddr_t vaddr)
         return false;
     }
 
-    uint64_t lohalf_max = (((uint64_t)1ULL << vaddr_width - 1) - 1);
+    uint64_t lohalf_max = (((uint64_t)1ULL << (vaddr_width - 1)) - 1);
     uint64_t hihalf_min = ~lohalf_max;
-
 
     /* check if vaddr is canonical */
     return (vaddr > lohalf_max || vaddr < hihalf_min);
@@ -378,7 +377,7 @@ mmu_status_t mmu_query(_in_ vaddr_t vaddr, _out_ paddr_t *paddr, _out_ uint32_t 
 
     cr3 = x86_get_cr3();
 
-    pmm_status_t status = mmu_get_mapping(vaddr, X86_P2KV(cr3), &ret_entry, &ret_flags, &ret_lvl);
+    mmu_status_t status = mmu_get_mapping(vaddr, X86_P2KV(cr3), &ret_entry, &ret_flags, &ret_lvl);
 
     if (status != MMU_NO_ERROR) {
         return status;

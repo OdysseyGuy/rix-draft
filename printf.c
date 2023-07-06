@@ -331,6 +331,7 @@ int vsnprintf(uint8_t *str, size_t size, const uint8_t *fmt, va_list argp)
 int vprintf(const uint8_t *fmt, va_list args)
 {
     /* return vsnprintf(, INT_MAX, fmt, args); */
+    return 0;
 }
 
 int vsprintf(uint8_t *str, const uint8_t *fmt, va_list args)

@@ -1,13 +1,11 @@
 /* SPDX-License-Identifier: MIT */
 
-#ifndef INIT_H
-#define INIT_H
+#pragma once
 
 #include <stdint.h>
 #include <compiler.h>
 
 /**
- * @brief
  * Reperesents the different stages of the kernel initialization process.
  * This allows us to register hooks at a specific stage.
  */
@@ -21,13 +19,11 @@ typedef enum init_stage {
 } init_stage_t;
 
 /** 
- * @brief
  * Current kernel initialization stage.
  */
 extern init_stage_t stage;
 
 /**
- * @brief
  * Stage hooks are used to register callbacks at specific stages of
  * the kernel initialization process. 
  */
@@ -41,7 +37,6 @@ typedef struct init_stage_hook {
 
 
 /**
- * @brief
  * All initialization code and initialized goes to the ".init" section.
  * Once we have initialized the kernel we can free this section.
  */
@@ -50,7 +45,6 @@ typedef struct init_stage_hook {
 #define __init_hook __section(".init.hook")
 
 /**
- * @brief
  * Registers a hook function at a specific initialization stage.
  * 
  * @param _name
@@ -81,16 +75,11 @@ typedef struct init_stage_hook {
 
 
 /**
- * @brief
  * Calls the initialization hooks upto the specified stage. 
  */
 void kernel_init_upto(_in_ init_stage_t upto_stage);
 
 /**
- * @brief
  * Initializes the kernel init stage hook system.
  */
 void init_hooks_init(void);
-
-
-#endif /* INIT_H */

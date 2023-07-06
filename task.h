@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 
-#ifndef TASK_H
-#define TASK_H
+#pragma once
 
 #include <pmm.h>
 
@@ -11,6 +10,3 @@ typedef struct task {
     list_t      thread_list;
     uint32_t    thread_count;
 } task_t;
-
-
-#endif /* TASK_H */

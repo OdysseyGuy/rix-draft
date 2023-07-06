@@ -2,7 +2,4 @@
 
 #include <mmu.h>
 
-void arch_init(void)
-{
-    mmu_init();
-}
+void arch_init(void) { mmu_init(); }

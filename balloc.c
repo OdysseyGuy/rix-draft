@@ -11,10 +11,8 @@ uintptr_t boot_alloc_end = (uintptr_t)&__end;
 
 void * balloc(size_t len)
 {
-    uintptr_t ptr;
-
-    ptr = ALIGN(boot_alloc_end, 8);
+    /* start allocating after boot_alloc_end */
+    uintptr_t ptr = ALIGN(boot_alloc_end, 8);
     boot_alloc_end = (ptr + ALIGN(len, 8));
-
     return (void *)ptr;
 }

@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 
-#ifndef PERCPU_H
-#define PERCPU_H
+#pragma once
 
 #include <stdint.h>
 #include <processor.h>
@@ -9,7 +8,6 @@
 #include <x86.h>
 
 /**
- * @brief
  * CPU-specific data. Each CPU in SMP holds this struct.
  * Use the get_current_cpu_data() function to get this struct
  * for the current CPU.
@@ -27,20 +25,17 @@ typedef struct cpu_data {
 extern cpu_data_t *cpu_data_ptr[];
 
 /**
- * @brief
  * Initialize the cpu data for boot processor.
  */
 void boot_cpu_init(void);
 
 /**
- * @brief
  * Called once by the boot processor after VM and heap is online to
  * initialize the cpu data for secondary processors.
  */
 void secondary_cpus_init(void);
 
 /**
- * @brief
  * Get the cpu data object.
  * 
  * @param cpu
@@ -68,6 +63,3 @@ static inline uint32_t get_current_cpu_number(void)
 {
     return (uint32_t)x86_get_gs_offset(__offsetof(cpu_data_t, cpu_number));
 }
-
-
-#endif /* PERCPU_H */

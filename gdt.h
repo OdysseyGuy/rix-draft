@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 
-#ifndef __GDT_H__
-#define __GDT_H__
+#pragma once
 
 /* 64-bit kernel mode selectors */
 #define __KERNEL_CS     0x08
@@ -22,4 +21,3 @@
 #define GDE_FLAG_DB     0x04    /* Size                 */
 #define GDE_FLAG_L      0x02    /* Long-mode            */
 
-#endif /* __GDT_H__ */

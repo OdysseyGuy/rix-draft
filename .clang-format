@@ -1,0 +1,19 @@
+# we are not gonna use clang-format for now
+DisableFormat: true
+
+Language: Cpp
+AccessModifierOffset: -2
+BinPackArguments: true
+BinPackParameters: true
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortFunctionsOnASingleLine: All
+AllowShortLoopsOnASingleLine: false
+BreakBeforeTernaryOperators: true
+BreakBeforeBraces: Attach
+ColumnLimit: 80
+ConstructorInitializerIndentWidth: 4
+ContinuationIndentWidth: 4
+Cpp11BracedListStyle: true
+IndentWidth: 4
+ReflowComments: true
+UseTab: Never

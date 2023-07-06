@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 
-#ifndef MULTIBOOT2_H
-#define MULTIBOOT2_H
+#pragma once
 
 #include <stdint.h>
 
@@ -43,5 +42,3 @@ enum multiboot2_tag_type {
     MULTIBOOT2_TAG_TYPE_END = 0,
     MULTIBOOT2_TAG_TYPE_MMAP = 6,
 };
-
-#endif /* MULTIBOOT2_H */

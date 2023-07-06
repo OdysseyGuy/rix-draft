@@ -22,9 +22,8 @@
 #define PADDR_FROM_ZONE_PAGE(page, zone)                                            \
     (paddr_t)PAGE_INDEX_IN_ZONE(page, zone) * PAGE_SIZE + (zone)->base;
 
-
+/* list of all the memory zones allocated by the pmm */
 static list_node_t zone_list = LIST_INITIAL_VALUE(zone_list);
-
 
 pmm_status_t pmm_add_zone(_in_ pmm_zone_t *zone)
 {
@@ -52,6 +51,8 @@ pmm_status_t pmm_add_zone(_in_ pmm_zone_t *zone)
         list_add_tail(&zone->free_pages, &page->node);
         zone->free_count++;
     }
+
+    return PMM_NO_ERROR;
 }
 
 pmm_status_t pmm_alloc_pages(uint32_t *count, list_node_t *list)

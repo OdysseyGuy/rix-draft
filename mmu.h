@@ -1,14 +1,12 @@
 /* SPDX-License-Identifier: MIT */
 
-#ifndef X86_MMU_H
-#define X86_MMU_H
+#pragma once
 
 #include <types.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <compiler.h>
 #include <ptable.h>
-
 
 #define IS_PAGE_ALIGNED(addr) IS_ALIGNED(addr, PAGE_SIZE)
 
@@ -37,15 +35,16 @@ typedef enum mmu_status {
 void mmu_init(void);
 
 /**
- * @brief
  * Check if virtual address is page aligned and canonical.
  */
-bool mmu_check_vaddr(_in_ vaddr_t vaddr);
-
-bool mmu_check_paddr(_in_ paddr_t paddr);
+bool mmu_check_vaddr(vaddr_t vaddr);
 
 /**
- * @brief
+ * Check if physical address is page aligned.
+ */
+bool mmu_check_paddr(paddr_t paddr);
+
+/**
  * Walks the page table structures.
  * 
  * @param vaddr
@@ -65,19 +64,17 @@ bool mmu_check_paddr(_in_ paddr_t paddr);
  * @param level
  * Paging level of the last valid entry.
  */
-mmu_status_t mmu_get_mapping(_in_ vaddr_t vaddr, _in_ addr_t pml4,
-                             _out_ pt_entry_t *last_valid_entry, _out_ uint64_t *flags,
-                             _out_ uint32_t *level);
+mmu_status_t mmu_get_mapping(vaddr_t vaddr, addr_t pml4,
+                             pt_entry_t /* out */ *last_valid_entry, uint64_t /* out */ *flags,
+                             uint32_t /* out */ *level);
 
 /**
- * @brief
  * Walk the page table structures to see if the mapping between a 
  * virtual address and a physical exists.
  */
-mmu_status_t mmu_check_mapping(_in_ vaddr_t vaddr, _in_ addr_t pml4, _in_ paddr_t paddr);
+mmu_status_t mmu_check_mapping(vaddr_t vaddr, addr_t pml4, paddr_t paddr);
 
 /**
- * @brief
  * Maps a virtual address to physical address.
  * 
  * @param pml4
@@ -89,13 +86,10 @@ mmu_status_t mmu_check_mapping(_in_ vaddr_t vaddr, _in_ addr_t pml4, _in_ paddr_
  * @param mmu_flags
  * Flags to set while mapping.
  */
-mmu_status_t mmu_map_addr(_in_ vaddr_t vaddr, _in_ addr_t pml4, _in_ paddr_t paddr,
-                          _in_ uint64_t mmu_flags);
+mmu_status_t mmu_map_addr(vaddr_t vaddr, addr_t pml4, paddr_t paddr,
+                          uint64_t mmu_flags);
 
 /**
- * @brief
  * Remove the virtual to physical address mapping from mmu.
  */
-mmu_status_t mmu_unmap_addr(_in_ vaddr_t vaddr, _in_ addr_t pml4, _in_ paddr_t paddr);
-
-#endif /* X86_MMU_H */
+mmu_status_t mmu_unmap_addr(vaddr_t vaddr, addr_t pml4, paddr_t paddr);

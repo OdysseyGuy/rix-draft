@@ -22,7 +22,7 @@ BUILD_DIR_OBJ := build/obj
 		-fno-common \
 		-fasynchronous-unwind-tables \
 
-CFLAGS := -mcmodel=large -mno-red-zone -fno-stack-protector -fno-builtin
+CFLAGS := -mcmodel=large -mno-red-zone -fno-stack-protector -fno-builtin -std=c17
 CFLAGS += -I.
 CFLAGS += -DKERNEL_VMA_BASE=$(KERNEL_VMA_BASE)
 CFLAGS += -DKERNEL_ASPACE_BASE=$(KERNEL_ASPACE_BASE)
@@ -90,7 +90,7 @@ qemu_monitor:
 	qemu-system-x86_64 --cdrom $(BUILD_DIR)/rix.iso --monitor telnet:127.0.0.1:1234,server,nowait
 
 qemu:
-	qemu-system-x86_64 --cdrom $(BUILD_DIR)/rix.iso -s -S -m 128M
+	qemu-system-x86_64 --cdrom $(BUILD_DIR)/rix.iso -s -m 128M
 
 clean:
 	rm -rf $(BUILD_DIR)/
