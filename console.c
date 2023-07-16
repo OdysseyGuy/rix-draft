@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 
-#define FB (0xb8000 + KERNEL_VMA_BASE)
+#define FB       (0xb8000 + KERNEL_VMA_BASE)
 
 #define TAB_SIZE 4
 
@@ -11,8 +11,8 @@ static uint8_t cur_y = 0;
 
 void put_char(uint8_t c, uint8_t fg, uint8_t bg, uint32_t x, uint32_t y)
 {
-    uint8_t attrib = (bg << 4) | (fg & 0xf);
-    volatile uint16_t *video = (volatile uint16_t*)FB + (cur_y * 80 + cur_x);
+    uint8_t            attrib = (bg << 4) | (fg & 0xf);
+    volatile uint16_t *video = (volatile uint16_t *)FB + (cur_y * 80 + cur_x);
 
     switch (c) {
     case '\t':
@@ -55,6 +55,6 @@ void put_str(char *str, uint8_t forecolor, uint8_t backcolor)
 
 void platform_init_console(void)
 {
-    put_str("Rix (build 0.0.1)\n\n\r", 0xf, 0x0);
+    put_str("Rix (build 0.0.1)\n\r", 0xf, 0x0);
     put_str("Welcome to Rix kernel!", 0xf, 0x0);
 }

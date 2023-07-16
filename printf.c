@@ -5,18 +5,18 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#define INT32_MAX   0x7fffffff
-#define UINT32_MAX  0xffffffff
+#define INT32_MAX  0x7fffffff
+#define UINT32_MAX 0xffffffff
 
 #define isdigit(c) (((c) >= '0') && ((c) <= '9'))
-#define chtod(c) ((c) - '0')
+#define chtod(c)   ((c) - '0')
 
-#define CAPS    0x1
-#define LEFT    0x2
-#define SIGN    0x4
-#define SPACE   0x8
-#define ALT     0x10
-#define PLUS    0x20
+#define CAPS       0x1
+#define LEFT       0x2
+#define SIGN       0x4
+#define SPACE      0x8
+#define ALT        0x10
+#define PLUS       0x20
 
 _Static_assert(CAPS == 1);
 
@@ -30,21 +30,19 @@ enum number_type {
     FORMAT_TYPE_SIZE_T,
 };
 
-int __printf_internal(
-    const uint8_t  *fmt,
-    va_list         argp,
-    void          (*putc)(uint8_t c, void *arg),
-    void           *arg)
+/* TODO: fix this */
+int __printf_internal(const char *fmt, va_list                  argp,
+                      void (*putc)(uint8_t c, void *arg), void *arg)
 {
-    uint8_t         c;
-    uint64_t        n;
-    uint32_t        flags;
-    uint8_t         ntype;
-    uint8_t         padc;
-    uint32_t        precision;
-    uint32_t        base;
-    uint32_t        width;
-    int             printed = 0;
+    char     c;
+    uint64_t n;
+    uint32_t flags;
+    uint8_t  ntype;
+    uint8_t  padc;
+    uint32_t precision;
+    uint32_t base;
+    uint32_t width;
+    int      printed = 0;
 
     while ((c = *fmt) != '\0') {
         if (c != '%') {
@@ -55,7 +53,7 @@ int __printf_internal(
         }
 
         /* consume '%' */
-        c = *fmt++;
+        fmt++;
 
         padc = ' ';
         width = 0;
@@ -64,20 +62,20 @@ int __printf_internal(
         ntype = FORMAT_TYPE_NONE;
 
         while (1) {
-            bool found = true;
-
-            ++fmt;
-            switch (*fmt) {
-            case '-': flags |= LEFT;    break;
-            case '+': flags |= PLUS;    break;
-            case ' ': flags |= SPACE;   break;
-            case '#': flags |= ALT;     break;
-            default:  found = false;
-            }
-
-            if (!found) {
+            c = *fmt;
+            if (c == '-') {
+                flags |= LEFT;
+            } else if (c == '+') {
+                flags |= PLUS;
+            } else if (c == ' ') {
+                flags |= SPACE;
+            } else if (c == '#') {
+                flags |= ALT;
+            } else {
                 break;
             }
+
+            ++fmt;
         }
 
         if (c == '0') {
@@ -85,7 +83,7 @@ int __printf_internal(
             c = *fmt++;
         }
 
-        /* get the field width */
+        /* field width */
         if (isdigit(c)) {
             while (isdigit(c)) {
                 width = 10 * width + chtod(c);
@@ -100,7 +98,7 @@ int __printf_internal(
             }
         }
 
-        /* get the precision */
+        /* precision */
         if (c == '.') {
             c = *fmt++;
             if (isdigit(c)) {
@@ -116,8 +114,8 @@ int __printf_internal(
         }
 
         if (c == 'l') {
-            c = *fmt++;
             ntype = FORMAT_TYPE_LONG;
+            c = *fmt++;
             if (c == 'l') {
                 ntype = FORMAT_TYPE_LONG_LONG;
                 c = *fmt++;
@@ -140,19 +138,18 @@ int __printf_internal(
 
         switch (c) {
         case 'c':
-            c = (uint8_t)va_arg(argp, int);
+            c = (char)va_arg(argp, int);
             (*putc)(c, arg);
             printed++;
             break;
 
-        case 's':
-        {
-            const uint8_t *s = va_arg(argp, const uint8_t *);
-            const uint8_t *ssaved;
+        case 's': {
+            const char *s = va_arg(argp, char *);
+            const char *ssaved;
 
             bool ladjust = (flags & LEFT);
 
-            if (precision == 1) {
+            if (precision == -1) {
                 precision = INT32_MAX;
             }
 
@@ -167,7 +164,7 @@ int __printf_internal(
                 for (; *s != '\0' && n < precision; s++) {
                     n++;
                 }
-                
+
                 s = ssaved;
 
                 while (n < width) {
@@ -201,32 +198,28 @@ int __printf_internal(
             __fallthrough;
         case 'O':
             base = 8;
+            goto print_unsigned;
 
         case 'i':
             __fallthrough;
-
         case 'd':
-            
+            base = 10;
             flags |= SIGN;
-            break;
+            goto print_signed;
 
         case 'U':
             flags |= CAPS;
             __fallthrough;
-
         case 'u':
-            
-            break;
+            goto print_unsigned;
 
         case 'p':
             flags |= ALT;
             __fallthrough;
-
         case 'X':
             flags |= CAPS;
             base = 16;
             __fallthrough;
-
         case 'x':
             if (flags & ALT) {
                 (*putc)(c, arg);
@@ -282,11 +275,10 @@ print_unsigned:
     return printed;
 }
 
-
-int printf(const uint8_t *fmt, ...)
+int printf(const char *fmt, ...)
 {
     va_list ap;
-    int i;
+    int     i;
 
     va_start(ap, fmt);
     i = vprintf(fmt, ap);
@@ -296,9 +288,9 @@ int printf(const uint8_t *fmt, ...)
 }
 
 typedef struct snprintf_arg {
-    uint8_t    *data;
-    size_t      size;
-    size_t      pos;
+    char  *data;
+    size_t size;
+    size_t pos;
 } snprintf_arg_t;
 
 static void vsnprintf_internal(uint8_t c, void *arg)
@@ -310,9 +302,9 @@ static void vsnprintf_internal(uint8_t c, void *arg)
     }
 }
 
-int vsnprintf(uint8_t *str, size_t size, const uint8_t *fmt, va_list argp)
+int vsnprintf(char *str, size_t size, const char *fmt, va_list argp)
 {
-    int ret;
+    int            ret;
     snprintf_arg_t info;
 
     info.data = str;
@@ -328,21 +320,21 @@ int vsnprintf(uint8_t *str, size_t size, const uint8_t *fmt, va_list argp)
     return ret;
 }
 
-int vprintf(const uint8_t *fmt, va_list args)
+int vprintf(const char *fmt, va_list args)
 {
     /* return vsnprintf(, INT_MAX, fmt, args); */
     return 0;
 }
 
-int vsprintf(uint8_t *str, const uint8_t *fmt, va_list args)
+int vsprintf(char *str, const char *fmt, va_list args)
 {
     return vsnprintf(str, INT32_MAX, fmt, args);
 }
 
-int sprintf(uint8_t *str, const uint8_t *fmt, ...)
+int sprintf(char *str, const char *fmt, ...)
 {
     va_list ap;
-    int i;
+    int     i;
 
     va_start(ap, fmt);
     i = vsprintf(str, fmt, ap);
@@ -351,10 +343,10 @@ int sprintf(uint8_t *str, const uint8_t *fmt, ...)
     return i;
 }
 
-int snprintf(uint8_t *str, size_t size, const uint8_t *fmt, ...)
+int snprintf(char *str, size_t size, const char *fmt, ...)
 {
     va_list ap;
-    int i;
+    int     i;
 
     va_start(ap, fmt);
     i = vsnprintf(str, size, fmt, ap);

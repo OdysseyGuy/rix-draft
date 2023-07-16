@@ -1,4 +1,3 @@
----
 Checks: "clang-diagnostic-*,clang-analyzer-*,modernize-*,-modernize-use-trailing-return-type"
 CheckOptions:
   - key: google-readability-braces-around-statements.ShortStatementLines

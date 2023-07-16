@@ -5,21 +5,21 @@
 #include <stdint.h>
 
 typedef struct multiboot2_tag {
-    uint32_t                type;
-    uint32_t                size;
+    uint32_t type;
+    uint32_t size;
 } multiboot2_tag_t;
 
 typedef struct multiboot2_info {
-    uint32_t                total_size;
-    uint32_t                reserved;
-    multiboot2_tag_t        tags[];
+    uint32_t         total_size;
+    uint32_t         reserved;
+    multiboot2_tag_t tags[];
 } multiboot2_info_t;
 
 typedef struct multiboot2_mmap_entry {
-    uint64_t                addr;
-    uint64_t                len;
-    uint32_t                type;
-    uint32_t                zero;
+    uint64_t addr;
+    uint64_t len;
+    uint32_t type;
+    uint32_t zero;
 } multiboot2_mmap_entry_t;
 
 typedef struct multiboot2_tag_mmap {

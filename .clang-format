@@ -1,19 +1,86 @@
-# we are not gonna use clang-format for now
-DisableFormat: true
-
-Language: Cpp
-AccessModifierOffset: -2
 BinPackArguments: true
 BinPackParameters: true
 AllowAllParametersOfDeclarationOnNextLine: true
-AllowShortFunctionsOnASingleLine: All
-AllowShortLoopsOnASingleLine: false
-BreakBeforeTernaryOperators: true
-BreakBeforeBraces: Attach
 ColumnLimit: 80
-ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 4
 Cpp11BracedListStyle: true
 IndentWidth: 4
-ReflowComments: true
 UseTab: Never
+SortIncludes: false
+Language: Cpp
+
+AlignArrayOfStructures: Left
+AlignConsecutiveBitFields: AcrossComments
+AlignConsecutiveDeclarations:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: true
+  AlignCompound: true
+  PadOperators: false
+AlignEscapedNewlines: Right
+AlignOperands: AlignAfterOperator
+AlignConsecutiveMacros:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: true
+AlignTrailingComments:
+  Kind: Always
+  OverEmptyLines: 1
+
+AllowShortBlocksOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: None
+AllowShortLoopsOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: WithoutElse
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterFunction: true
+  AfterEnum: false
+  AfterStruct: false
+  BeforeWhile: false
+  SplitEmptyFunction: true
+BreakBeforeInlineASMColon: Always
+BreakBeforeTernaryOperators: true
+
+InsertNewlineAtEOF: true
+IndentCaseLabels: false
+IndentGotoLabels: false
+KeepEmptyLinesAtTheStartOfBlocks: false
+ReflowComments: true
+
+SpaceBeforeParens: Custom
+SpaceBeforeParensOptions:
+  AfterControlStatements: true
+  AfterForeachMacros: true
+  AfterFunctionDeclarationName: false
+  AfterFunctionDefinitionName: false
+  BeforeNonEmptyParentheses: false
+
+AttributeMacros:
+  [
+    "__unused",
+    "__packed",
+    "__fallthrough",
+    "__unused",
+    "__used",
+    "__noinline",
+    "__always_inline",
+    "__noreturn",
+    "__malloc",
+    "__weak",
+    "__constructor",
+    "__destructor",
+    "__pure",
+    "__hot",
+    "__cold",
+    "__const",
+    "__visibility",
+    "__aligned",
+    "__section",
+    "__allocsize",
+    "__nonnull",
+    "__printf",
+    "__init_func",
+    "__init_data",
+  ]
+ForEachMacros: ["list_for_each", "list_for_each_prev", "list_for_each_entry"]

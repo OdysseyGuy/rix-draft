@@ -7,11 +7,10 @@
 #include <stdarg.h>
 #include <compiler.h>
 
-int printf(const uint8_t *fmt, ...);
-int sprintf(uint8_t /* out */ *str, const uint8_t *fmt, ...);
-int snprintf(uint8_t /* out */ *str, size_t size, const uint8_t *fmt, ...);
+int printf(const char *fmt, ...) __printf(1, 2);
+int sprintf(char /* out */ *str, const char *fmt, ...);
+int snprintf(char /* out */ *str, size_t size, const char *fmt, ...);
 
-int vprintf(const uint8_t *fmt, va_list args);
-int vsprintf(uint8_t /* out */ *str, const uint8_t *fmt, va_list args);
-int vsnprintf(uint8_t /* out */ *str, size_t size, const uint8_t *fmt,
-            va_list args);
+int vprintf(const char *fmt, va_list args);
+int vsprintf(char /* out */ *str, const char *fmt, va_list args);
+int vsnprintf(char /* out */ *str, size_t size, const char *fmt, va_list args);

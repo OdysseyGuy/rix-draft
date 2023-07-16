@@ -2,19 +2,19 @@
 
 #include <processor.h>
 
-#define MAX_NCPUS   64
+#define MAX_NCPUS 64
 
-processor_t         processor_array[MAX_NCPUS];
+processor_t processor_array[MAX_NCPUS];
 
-processor_set_t     default_pset;
+processor_set_t default_pset;
 
-list_t              pset_list;
-uint8_t             pset_count;
+list_t  pset_list;
+uint8_t pset_count;
 
-extern list_t       thread_list;
-extern uint32_t     thread_count;
+extern list_t   thread_list;
+extern uint32_t thread_count;
 
-processor_t         bsp; /* bootstrap processor */
+processor_t bsp; /* bootstrap processor */
 
 void processor_bootstrap(void)
 {

@@ -5,4 +5,5 @@
 void platform_init_debug(void)
 {
     /* disable all interrrupts */
+    ;
 }

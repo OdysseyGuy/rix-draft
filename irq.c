@@ -13,7 +13,7 @@ void x86_div_by_zero_exception_handler(void)
 
 void x86_page_fault_exception_handler(x86_interrupt_frame_t *frame)
 {
-    vaddr_t fault_vaddr = x86_get_cr2();
+    /* vaddr_t fault_vaddr = x86_get_cr2(); */
 }
 
 void x86_int_handler(x86_interrupt_frame_t *frame)

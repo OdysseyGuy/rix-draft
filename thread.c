@@ -4,9 +4,9 @@
 #include <spinlock.h>
 #include <cpu_data.h>
 
-list_t          thread_list;
-uint32_t        thread_count;
-spin_lock_t     thread_lock = 0;
+list_t      thread_list;
+uint32_t    thread_count;
+spin_lock_t thread_lock = 0;
 
 static queue_t  thread_queue;
 static uint32_t thread_queue_bitmap;

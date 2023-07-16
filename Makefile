@@ -10,9 +10,7 @@ KERNEL_ASPACE_SIZE := 0x0000008000000000
 BUILD_DIR     := build
 BUILD_DIR_OBJ := build/obj
 
-# CFLAGS := -Wall \
-		-Wextra \
-		-nostdlib \
+# CFLAGS := -nostdlib \
 		-nostartfiles \
 		-mcmodel=large \
 		-mno-red-zone \
@@ -22,6 +20,8 @@ BUILD_DIR_OBJ := build/obj
 		-fno-common \
 		-fasynchronous-unwind-tables \
 
+# CFLAGS := -Wall -Wextra -Wpedantic -Wformat=2 -Wno-unused-parameter -Wshadow -Wwrite-strings
+# CFLAGS += -Wstrict-prototypes -Wold-style-definition -Wredundant-decls -Wnested-externs -Wmissing-include-dirs
 CFLAGS := -mcmodel=large -mno-red-zone -fno-stack-protector -fno-builtin -std=c17
 CFLAGS += -I.
 CFLAGS += -DKERNEL_VMA_BASE=$(KERNEL_VMA_BASE)
@@ -90,7 +90,7 @@ qemu_monitor:
 	qemu-system-x86_64 --cdrom $(BUILD_DIR)/rix.iso --monitor telnet:127.0.0.1:1234,server,nowait
 
 qemu:
-	qemu-system-x86_64 --cdrom $(BUILD_DIR)/rix.iso -s -m 128M
+	qemu-system-x86_64 --cdrom $(BUILD_DIR)/rix.iso -s -S -m 2G
 
 clean:
 	rm -rf $(BUILD_DIR)/

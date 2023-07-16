@@ -13,13 +13,15 @@
  * for the current CPU.
  */
 typedef struct cpu_data {
-    uint32_t        cpu_number;
-    thread_t        cpu_current_thread;
+    uint32_t cpu_number;
+    thread_t cpu_current_thread;
 
-    processor_t    *cpu_processor;
+    processor_t *cpu_processor;
 
-    uint8_t         cpu_lapic_id;
-    uint8_t         cpu_lapic_version;
+    uint8_t cpu_lapic_id;
+    uint8_t cpu_lapic_version;
+
+    bool cpu_running;
 } cpu_data_t;
 
 extern cpu_data_t *cpu_data_ptr[];
@@ -37,26 +39,25 @@ void secondary_cpus_init(void);
 
 /**
  * Get the cpu data object.
- * 
- * @param cpu
- * CPU number.
- * 
- * @return
- * CPU data for the specified CPU number. 
+ *
+ * @param cpu CPU number.
+ *
+ * @return CPU data for the specified CPU number.
  */
-static inline cpu_data_t * get_cpu_data(_in_ uint32_t cpu)
+static inline cpu_data_t *get_cpu_data(uint32_t cpu)
 {
     return cpu_data_ptr[cpu];
 }
 
-static inline cpu_data_t * get_current_cpu_data(void)
+static inline cpu_data_t *get_current_cpu_data(void)
 {
     return (cpu_data_t *)x86_get_gs_offset(__offsetof(cpu_data_t, cpu_number));
 }
 
-static inline thread_t * get_current_thread()
+static inline thread_t *get_current_thread()
 {
-    return (thread_t *)x86_get_gs_offset(__offsetof(cpu_data_t, cpu_current_thread));
+    return (thread_t *)x86_get_gs_offset(
+        __offsetof(cpu_data_t, cpu_current_thread));
 }
 
 static inline uint32_t get_current_cpu_number(void)

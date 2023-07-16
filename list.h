@@ -6,8 +6,8 @@
 #include <stddef.h>
 #include <compiler.h>
 
-#define container_of(ptr, type, member) \
-    ((type *)((addr_t)(ptr) - offsetof(type, member)))
+#define container_of(ptr, type, member)                                        \
+    ((type *)((addr_t)(ptr)-offsetof(type, member)))
 
 /**
  * Circular doubly linked-list.
@@ -117,7 +117,8 @@ static inline list_node_t *list_remove_head(list_node_t *head)
         list_node_t *item = head->next;
         list_delete(item);
         return item;
-    } else {
+    }
+    else {
         return NULL;
     }
 }
@@ -125,7 +126,7 @@ static inline list_node_t *list_remove_head(list_node_t *head)
 #define list_remove_head_type(head, type, element)                             \
     ({                                                                         \
         list_node_t *node = list_remove_head(head);                            \
-        type *__t;                                                             \
+        type        *__t;                                                      \
         if (node)                                                              \
             __t = container_of(node, type, element);                           \
         else                                                                   \
@@ -142,7 +143,8 @@ static inline list_node_t *list_remove_tail(list_node_t *list)
         list_node_t *item = list->prev;
         list_delete(item);
         return item;
-    } else {
+    }
+    else {
         return NULL;
     }
 }
@@ -150,7 +152,7 @@ static inline list_node_t *list_remove_tail(list_node_t *list)
 #define list_remove_tail_type(list, type, element)                             \
     ({                                                                         \
         list_node_t *node = list_remove_tail(list);                            \
-        type *__t;                                                             \
+        type        *__t;                                                      \
         if (node)                                                              \
             __t = container_of(node, type, element);                           \
         else                                                                   \
@@ -165,7 +167,8 @@ static inline list_node_t *list_peek_head(list_node_t *list)
 {
     if (list->next != list) {
         return list->next;
-    } else {
+    }
+    else {
         return NULL;
     }
 }
@@ -173,7 +176,7 @@ static inline list_node_t *list_peek_head(list_node_t *list)
 #define list_peek_head_type(list, type, element)                               \
     ({                                                                         \
         list_node_t *node = list_peek_head(list);                              \
-        type *__t;                                                             \
+        type        *__t;                                                      \
         if (node)                                                              \
             __t = container_of(node, type, element);                           \
         else                                                                   \
@@ -188,7 +191,8 @@ static inline list_node_t *list_peek_tail(list_node_t *list)
 {
     if (list->prev != list) {
         return list->prev;
-    } else {
+    }
+    else {
         return NULL;
     }
 }
@@ -196,7 +200,7 @@ static inline list_node_t *list_peek_tail(list_node_t *list)
 #define list_peek_tail_type(list, type, element)                               \
     ({                                                                         \
         list_node_t *node = list_peek_tail(list);                              \
-        type *__t;                                                             \
+        type        *__t;                                                      \
         if (node)                                                              \
             __t = container_of(node, type, element);                           \
         else                                                                   \
@@ -229,10 +233,9 @@ static inline list_node_t *list_peek_tail(list_node_t *list)
  */
 static inline size_t list_length(const list_node_t *list)
 {
-    size_t cnt = 0;
+    size_t             cnt = 0;
     const list_node_t *node = list;
-    list_for_each(list, node)
-    {
+    list_for_each (list, node) {
         cnt++;
     }
     return cnt;

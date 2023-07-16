@@ -1,31 +1,31 @@
 /* SPDX-License-Identifier: MIT */
 
-#include <pmm.h>
 #include <balloc.h>
 #include <list.h>
+#include <pmm.h>
 #include <string.h>
 
-
-#define FRAME_SIZE PAGE_SIZE
+#define FRAME_SIZE             PAGE_SIZE
 #define ZONE_FRAME_COUNT(zone) (zone->size / FRAME_SIZE)
 
-#define ADDRESS_BELONGS_TO_ZONE(addr, zone)                                         \
+#define ADDRESS_BELONGS_TO_ZONE(addr, zone)                                    \
     (((addr) >= (zone)->base) && ((addr) <= ((zone)->base + (zone)->size - 1)))
 
-#define PAGE_BELONGS_TO_ZONE(pgaddr, zone)                                          \
-    ((uintptr_t)(pgaddr) >= (uintptr_t)(zone)->page_array) &&                       \
-    ((uintptr_t)(pgaddr) < ((uintptr_t)(zone)->page_array + ZONE_FRAME_COUNT(zone)))
+#define PAGE_BELONGS_TO_ZONE(pgaddr, zone)                                     \
+    ((uintptr_t)(pgaddr) >= (uintptr_t)(zone)->page_array) &&                  \
+        ((uintptr_t)(pgaddr) <                                                 \
+         ((uintptr_t)(zone)->page_array + ZONE_FRAME_COUNT(zone)))
 
-#define PAGE_INDEX_IN_ZONE(page, zone)                                              \
+#define PAGE_INDEX_IN_ZONE(page, zone)                                         \
     (((uintptr_t)page - (uintptr_t)(zone)->page_array) / sizeof(vm_page_t))
 
-#define PADDR_FROM_ZONE_PAGE(page, zone)                                            \
-    (paddr_t)PAGE_INDEX_IN_ZONE(page, zone) * PAGE_SIZE + (zone)->base;
+#define PADDR_FROM_ZONE_PAGE(page, zone)                                       \
+    (paddr_t) PAGE_INDEX_IN_ZONE(page, zone) * PAGE_SIZE + (zone)->base;
 
 /* list of all the memory zones allocated by the pmm */
 static list_node_t zone_list = LIST_INITIAL_VALUE(zone_list);
 
-pmm_status_t pmm_add_zone(_in_ pmm_zone_t *zone)
+pmm_status_t pmm_add_zone(pmm_zone_t *zone)
 {
     if (!(zone->size > 0)) {
         return PMM_ERR_INVALID_ARGS;
@@ -46,7 +46,7 @@ pmm_status_t pmm_add_zone(_in_ pmm_zone_t *zone)
 
     /* add the allocated pages to free list */
     for (uint32_t page_idx = 0; page_idx < frame_count; ++page_idx) {
-        vm_page_t* page = &zone->page_array[page_idx];
+        vm_page_t *page = &zone->page_array[page_idx];
 
         list_add_tail(&zone->free_pages, &page->node);
         zone->free_count++;
@@ -60,12 +60,13 @@ pmm_status_t pmm_alloc_pages(uint32_t *count, list_node_t *list)
     /* fast path */
     if (*count == 0) {
         return PMM_NO_ERROR;
-    } else if (*count == 1) {
+    }
+    else if (*count == 1) {
         *count = 0;
 
-        vm_page_t* page;
+        vm_page_t   *page;
         pmm_status_t status = pmm_alloc_page(&page);
-        
+
         if (status == PMM_NO_ERROR) {
             /* add allocated pages to the list */
             list_add_tail(list, &page->node);
@@ -79,12 +80,12 @@ pmm_status_t pmm_alloc_pages(uint32_t *count, list_node_t *list)
     uint32_t allocated = 0;
 
     pmm_zone_t *zone;
-    list_for_each_entry(zone, &zone_list, node) {
-        while ( (allocated < *count) && (zone->free_count > 0) ) {
-            vm_page_t *page = list_remove_head_type(&zone->free_pages, vm_page_t, node);
-            
-            if (!page)
-                goto done;
+    list_for_each_entry (zone, &zone_list, node) {
+        while ((allocated < *count) && (zone->free_count > 0)) {
+            vm_page_t *page =
+                list_remove_head_type(&zone->free_pages, vm_page_t, node);
+
+            if (!page) goto done;
 
             page->flags |= VM_PAGE_FLAG_NONFREE;
             list_add_tail(list, &page->node);
@@ -108,18 +109,18 @@ pmm_status_t pmm_alloc_page(vm_page_t **out_page)
 {
     /* walk through the arena searching for free page */
     pmm_zone_t *zone;
-    list_for_each_entry(zone, &zone_list, node) {
+    list_for_each_entry (zone, &zone_list, node) {
         /* allocate a page if the arena has free page */
         if (zone->free_count > 0) {
-            vm_page_t *page = list_remove_head_type(&zone->free_pages, vm_page_t, node);
-            if (!page)
-                goto done;
+            vm_page_t *page =
+                list_remove_head_type(&zone->free_pages, vm_page_t, node);
+            if (!page) goto done;
 
             zone->free_count--;
 
             page->flags |= VM_PAGE_FLAG_NONFREE;
             *out_page = page;
-            
+
             goto done;
         }
     }
@@ -136,12 +137,12 @@ size_t pmm_alloc_range(paddr_t address, size_t count, list_node_t *list)
     if (count == 0) {
         return 0;
     }
-    
+
     size_t allocated = 0;
 
     /* walk through the arena, see if the physical page belongs to it */
     pmm_zone_t *zone;
-    list_for_each_entry(zone, &zone_list, node) {
+    list_for_each_entry (zone, &zone_list, node) {
         while (allocated < count && ADDRESS_BELONGS_TO_ZONE(address, zone)) {
             size_t index = (address - zone->base) / PAGE_SIZE;
 
@@ -163,8 +164,7 @@ size_t pmm_alloc_range(paddr_t address, size_t count, list_node_t *list)
             address += PAGE_SIZE;
         }
 
-        if (allocated == count)
-            break;
+        if (allocated == count) break;
     }
 
 done:
@@ -174,15 +174,16 @@ done:
 size_t pmm_free_pages(list_t *head)
 {
     size_t count = 0;
-    while(!list_is_empty(head)) {
+    while (!list_is_empty(head)) {
         vm_page_t *page = list_remove_head_type(head, vm_page_t, node);
 
-        /* find the arena this page belongs to and add the page to its free-list */
+        /* find the arena this page belongs to and add the page to its free-list
+         */
         pmm_zone_t *zone;
-        list_for_each_entry(zone, &zone_list, node) {
+        list_for_each_entry (zone, &zone_list, node) {
             if (PAGE_BELONGS_TO_ZONE(page, zone)) {
                 page->flags &= ~VM_PAGE_FLAG_NONFREE;
-                
+
                 list_add(&zone->free_pages, &page->node);
                 zone->free_count++;
                 count++;
@@ -203,7 +204,6 @@ size_t pmm_free_page(vm_page_t *page)
 
     return pmm_free_pages(&list);
 }
-
 
 #if 0
 
@@ -271,15 +271,12 @@ retry:
 
 #endif
 
-void *
-pmm_alloc_kpages(
-    size_t      count,
-    list_node_t *list)
+void *pmm_alloc_kpages(size_t count, list_node_t *list)
 {
     /* fast path for single page */
     if (count == 1) {
-        vm_page_t* page;
-        int status = pmm_alloc_page(&page);
+        vm_page_t *page;
+        int        status = pmm_alloc_page(&page);
 
         if (!page) {
             return NULL;
@@ -295,7 +292,7 @@ size_t pmm_free_kpages(void *ptr, uint32_t count)
 {
 }
 
-void * paddr_to_kvaddr(paddr_t pa)
+void *paddr_to_kvaddr(paddr_t pa)
 {
     mmu_initial_mapping_t *map = mmu_initial_mappings;
     while (map->size > 0) {
@@ -304,31 +301,31 @@ void * paddr_to_kvaddr(paddr_t pa)
         }
         map++;
     }
-    
+
     return NULL;
 }
 
 paddr_t vm_page_to_paddr(vm_page_t *page)
 {
     pmm_zone_t *zone;
-    list_for_each_entry(zone, &zone_list, node) {
+    list_for_each_entry (zone, &zone_list, node) {
         if (PAGE_BELONGS_TO_ZONE(page, zone)) {
             return PADDR_FROM_ZONE_PAGE(page, zone);
         }
     }
-    
+
     return -1;
 }
 
-vm_page_t * paddr_to_vm_page(paddr_t addr)
+vm_page_t *paddr_to_vm_page(paddr_t addr)
 {
     pmm_zone_t *zone;
-    list_for_each_entry(zone, &zone_list, node) {
+    list_for_each_entry (zone, &zone_list, node) {
         if (PAGE_BELONGS_TO_ZONE(addr, zone)) {
             size_t index = (addr - zone->base) / PAGE_SIZE;
             return &zone->page_array[index];
         }
     }
-    
+
     return NULL;
 }
