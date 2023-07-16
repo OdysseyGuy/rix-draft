@@ -1,6 +1,6 @@
 # rix
 
-Welcome to the source code of the _Rix_ micorkernel. This is currently in draft stage and any feature request or bug report is welcome.
+Welcome to the source code of the **Rix** micorkernel. This is currently in draft stage and any feature request or bug report is welcome.
 
 ## Building
 
